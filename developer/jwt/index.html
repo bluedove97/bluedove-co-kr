@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JWT Decoder — JWT 토큰 디코딩·서명 검증 | Bluedove</title>
+  <meta name="description" content="온라인 JWT 디코더. JSON Web Token의 Header·Payload 파싱, exp/iat/nbf 만료 시간 확인, HS256·RS256·ES256·PS256 서명 검증을 지원합니다. 토큰과 키는 서버로 전송되지 않고 Web Crypto API로 브라우저에서 검증합니다.">
+  <meta name="keywords" content="JWT Decoder, JWT 디코더, JWT 검증, JWT 파싱, JSON Web Token, JWT 서명 검증, HS256, RS256, ES256, JWT exp 확인">
+  <meta name="author" content="bluedove">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f5f6f7">
+  <link rel="canonical" href="https://bluedove.co.kr/developer/jwt/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bluedove's Developer Playground">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="JWT Decoder — JWT 토큰 디코딩·서명 검증 | Bluedove">
+  <meta property="og:description" content="온라인 JWT 디코더. JSON Web Token의 Header·Payload 파싱, exp/iat/nbf 만료 시간 확인, HS256·RS256·ES256·PS256 서명 검증을 지원합니다. 토큰과 키는 서버로 전송되지 않고 Web Crypto API로 브라우저에서 검증합니다.">
+  <meta property="og:url" content="https://bluedove.co.kr/developer/jwt/">
+  <meta property="og:image" content="https://bluedove.co.kr/image/bluedove_welcome.png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JWT Decoder — JWT 토큰 디코딩·서명 검증 | Bluedove">
+  <meta name="twitter:description" content="온라인 JWT 디코더. JSON Web Token의 Header·Payload 파싱, exp/iat/nbf 만료 시간 확인, HS256·RS256·ES256·PS256 서명 검증을 지원합니다. 토큰과 키는 서버로 전송되지 않고 Web Crypto API로 브라우저에서 검증합니다.">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preload" href="/fonts/MaruBuri-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css?v=20261121">
+
+  <!-- Google AdSense (승인 후 사용)
+       1) 아래 script 주석 해제 + ca-pub 값 교체
+       2) <html> 태그에 class="ads-enabled" 추가 → .ad-slot 영역이 표시됨
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"JWT Decoder","url":"https://bluedove.co.kr/developer/jwt/","description":"온라인 JWT 디코더. JSON Web Token의 Header·Payload 파싱, exp/iat/nbf 만료 시간 확인, HS256·RS256·ES256·PS256 서명 검증을 지원합니다. 토큰과 키는 서버로 전송되지 않고 Web Crypto API로 브라우저에서 검증합니다.","inLanguage":"ko-KR","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isPartOf":{"@id":"https://bluedove.co.kr/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://bluedove.co.kr/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://bluedove.co.kr/developer/json/"},{"@type":"ListItem","position":3,"name":"JWT Decoder","item":"https://bluedove.co.kr/developer/jwt/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"토큰을 붙여넣어도 안전한가요?","acceptedAnswer":{"@type":"Answer","text":"토큰과 키는 이 페이지 밖으로 나가지 않습니다. 디코딩과 서명 검증은 브라우저 내장 Web Crypto API로 처리합니다. 그래도 운영 환경 토큰은 만료된 것이나 테스트용을 쓰는 편이 좋습니다."}},{"@type":"Question","name":"어떤 알고리즘을 검증할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"HS256/384/512(공유 비밀키), RS256/384/512와 PS256/384/512(RSA 공개키), ES256/384/512(EC 공개키)를 지원합니다. 공개키는 PEM(-----BEGIN PUBLIC KEY-----) 또는 JWK(JSON) 형식으로 넣으면 됩니다."}},{"@type":"Question","name":"디코딩이 된다고 토큰이 유효한 건가요?","acceptedAnswer":{"@type":"Answer","text":"아니요. JWT의 Header와 Payload는 단순 Base64URL 인코딩이라 누구나 읽을 수 있습니다. 위조 여부는 서명 검증을 통과해야 알 수 있습니다."}}]}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#content">본문 바로가기</a>
+
+  <header class="topbar">
+    <button class="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="메뉴 열기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand" href="/" aria-label="Bluedove's Developer Playground 홈">
+      <!-- <span class="brand-mark" aria-hidden="true">bd</span> -->
+      <span><span class="brand-name">Bluedove's</span> <span class="brand-sub">Developer Playground</span></span>
+    </a>
+    <span class="topbar-spacer"></span>
+    <a class="topbar-link hide-sm" href="/#tools">Tools</a>
+    <a class="topbar-link" href="/#about">About</a>
+  </header>
+
+  <div class="shell">
+    <nav id="sidebar" class="sidebar" aria-label="주 메뉴">
+      <ul class="nav-list nav-home"><li><a class="nav-link" href="/"><span class="nav-ico" aria-hidden="true">~/</span><span>HOME · INTRO</span></a></li></ul>
+      <div class="nav-group">
+        <div class="nav-title">Developer Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/developer/json/"><span class="nav-ico" aria-hidden="true">{ }</span><span>JSON Formatter / Validator</span></a></li>
+          <li><a class="nav-link" href="/developer/yaml/"><span class="nav-ico" aria-hidden="true">YML</span><span>JSON ↔ YAML 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/base64/"><span class="nav-ico" aria-hidden="true">B64</span><span>Base64 Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/jwt/" aria-current="page"><span class="nav-ico" aria-hidden="true">JWT</span><span>JWT Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/url/"><span class="nav-ico" aria-hidden="true">%20</span><span>URL Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/timestamp/"><span class="nav-ico" aria-hidden="true">TS</span><span>Timestamp Converter</span></a></li>
+          <li><a class="nav-link" href="/developer/image/"><span class="nav-ico" aria-hidden="true">IMG</span><span>이미지 압축 · 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/diff/"><span class="nav-ico" aria-hidden="true">DIF</span><span>텍스트 비교 · 변환</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Daily Life Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/daily/overseas/"><span class="nav-ico" aria-hidden="true">TZ</span><span>해외시간 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/age/"><span class="nav-ico" aria-hidden="true">AGE</span><span>만나이 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/fuel/"><span class="nav-ico" aria-hidden="true">KM</span><span>연비 계산기</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Playground</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/playground/browser/"><span class="nav-ico" aria-hidden="true">FPS</span><span>브라우저 성능 테스트</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <main id="content" class="main">
+      <nav class="crumbs" aria-label="현재 위치">
+        <ol>
+          <li><a href="/">홈</a></li>
+          <li><a href="/developer/json/">Developer Tools</a></li>
+          <li><span aria-current="page">JWT Decoder</span></li>
+        </ol>
+      </nav>
+      <section class="hero-band">
+        <div class="wrap">
+          <p class="hero-kicker">Developer Tools / jwt</p>
+          <h1 class="hero-title">JWT Decoder</h1>
+          <p class="hero-desc">JWT를 붙여넣으면 Header와 Payload를 풀어 보여 주고 exp·iat·nbf를 날짜로 바꿔 만료 여부를 알려 줍니다. 비밀키나 공개키를 넣으면 서명도 검증합니다.</p>
+          <div class="hero-badges">
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>브라우저에서만 처리</span>
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>무료 · 회원가입 없음</span>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="top" aria-label="광고"></div>
+
+      <div class="page-body">
+<section class="tool">
+          <div class="wrap">
+            <div class="grid-2">
+              <div class="stack">
+                <div class="field">
+                  <div class="pane-head">
+                    <label class="label" for="jwt-in">JWT 토큰</label>
+                    <div class="btn-row">
+                      <button class="btn btn-ghost btn-sm" type="button" id="btn-sample">예시 토큰 만들기</button>
+                      <button class="btn btn-ghost btn-sm" type="button" id="btn-clear">지우기</button>
+                    </div>
+                  </div>
+                  <textarea id="jwt-in" class="textarea code-area" rows="8" spellcheck="false" autocomplete="off" autocapitalize="off" style="white-space:pre-wrap;word-break:break-all" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature"></textarea>
+                </div>
+                <div class="jwt-colored mono" id="jwt-colored" aria-hidden="true"></div>
+                <div id="jwt-status" class="status" role="status" aria-live="polite"></div>
+
+                <div class="surface">
+                  <h2 class="subhead" style="font-size:18px;margin-bottom:12px">서명 검증</h2>
+                  <p class="meta" style="margin-bottom:12px">알고리즘: <span class="mono" id="alg-name">-</span></p>
+                  <div class="field">
+                    <label class="label" for="key-in" id="key-label">비밀키 / 공개키</label>
+                    <textarea id="key-in" class="textarea code-area" rows="5" spellcheck="false" autocomplete="off" autocapitalize="off" style="min-height:120px;white-space:pre-wrap;word-break:break-all" placeholder="HS256: 공유 비밀키 문자열&#10;RS256/ES256: -----BEGIN PUBLIC KEY----- 또는 JWK(JSON)"></textarea>
+                    <label class="check" id="b64-secret-wrap"><input type="checkbox" id="b64-secret"> 비밀키가 Base64로 인코딩되어 있음</label>
+                  </div>
+                  <div class="btn-row" style="margin-top:12px">
+                    <button class="btn" type="button" id="btn-verify">서명 검증</button>
+                  </div>
+                  <div id="verify-status" class="status" role="status" aria-live="polite" style="margin-top:12px"></div>
+                </div>
+              </div>
+
+              <div class="stack">
+                <div class="field">
+                  <div class="pane-head">
+                    <span class="label jwt-h">Header</span>
+                    <button class="btn btn-ghost btn-sm" type="button" data-copy="#jwt-header">복사</button>
+                  </div>
+                  <pre id="jwt-header" class="output" tabindex="0" style="min-height:90px" aria-label="Header JSON"></pre>
+                </div>
+                <div class="field">
+                  <div class="pane-head">
+                    <span class="label jwt-p">Payload</span>
+                    <button class="btn btn-ghost btn-sm" type="button" data-copy="#jwt-payload">복사</button>
+                  </div>
+                  <pre id="jwt-payload" class="output" tabindex="0" style="min-height:160px" aria-label="Payload JSON"></pre>
+                </div>
+                <div>
+                  <h2 class="subhead" style="font-size:18px;margin-bottom:8px">클레임</h2>
+                  <table class="kv" id="claims"><tbody><tr><td class="meta">토큰을 입력하면 표시됩니다.</td></tr></tbody></table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <style>
+          .jwt-colored { padding: 12px; border-radius: var(--r-md); background: var(--chrome); font-size: 13px; line-height: 1.6; word-break: break-all; }
+          .jwt-colored:empty { display: none; }
+          .jwt-colored .h, .jwt-h { color: #b4232a; }
+          .jwt-colored .p, .jwt-p { color: #6a2bb0; }
+          .jwt-colored .s { color: #0b6e9e; }
+          .jwt-colored .d { color: var(--ink-meta); }
+          .claim-badge { display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: var(--r-sm); font-size: 12px; font-family: var(--font-base); }
+          .claim-badge.ok { background: var(--ok-bg); color: var(--ok); }
+          .claim-badge.err { background: var(--err-bg); color: var(--err); }
+          .claim-badge.warn { background: var(--warn-bg); color: var(--warn); }
+        </style>
+      </div>
+
+      <section class="band band-neutral" aria-labelledby="guide-title">
+        <div class="wrap prose">
+          <h2 id="guide-title">사용 방법</h2>
+          <ol>
+            <li>JWT를 붙여넣으면 바로 Header와 Payload를 풀어서 보여 줍니다. <code>Bearer </code> 접두어가 붙어 있어도 됩니다.</li>
+            <li>클레임 표에서 <code>exp</code>(만료), <code>iat</code>(발급), <code>nbf</code>(유효 시작)를 한국 시간으로 확인합니다.</li>
+            <li>서명을 확인하려면 키를 넣고 <strong>서명 검증</strong>을 누릅니다. HS 계열은 공유 비밀키, RS·PS·ES 계열은 공개키(PEM 또는 JWK)를 넣습니다.</li>
+          </ol>
+          <h3>JWT 구조</h3>
+          <p>JWT는 점(.)으로 구분된 세 부분으로 이루어집니다. <strong>Header</strong>에는 서명 알고리즘(alg)과 토큰 타입이, <strong>Payload</strong>에는 사용자 ID·권한·만료 시각 같은 클레임이, <strong>Signature</strong>에는 앞의 두 부분을 키로 서명한 값이 들어갑니다. 앞의 두 부분은 Base64URL로 인코딩만 되어 있어서 암호화되지 않습니다.</p>
+          <h3>주요 등록 클레임</h3>
+          <ul>
+            <li><strong>iss</strong> 발급자 · <strong>sub</strong> 주체(사용자) · <strong>aud</strong> 대상</li>
+            <li><strong>exp</strong> 만료 시각 · <strong>nbf</strong> 이 시각 전에는 무효 · <strong>iat</strong> 발급 시각 (모두 Unix 초)</li>
+            <li><strong>jti</strong> 토큰 고유 ID (재사용 방지)</li>
+          </ul>
+          <h3>자주 묻는 질문</h3>
+          <div class="faq">
+            <details><summary>토큰을 붙여넣어도 안전한가요?</summary><p>토큰과 키는 이 페이지 밖으로 나가지 않습니다. 디코딩과 서명 검증은 브라우저 내장 Web Crypto API로 처리합니다. 그래도 운영 환경 토큰은 만료된 것이나 테스트용을 쓰는 편이 좋습니다.</p></details>
+            <details><summary>어떤 알고리즘을 검증할 수 있나요?</summary><p>HS256/384/512(공유 비밀키), RS256/384/512와 PS256/384/512(RSA 공개키), ES256/384/512(EC 공개키)를 지원합니다. 공개키는 PEM(-----BEGIN PUBLIC KEY-----) 또는 JWK(JSON) 형식으로 넣으면 됩니다.</p></details>
+            <details><summary>디코딩이 된다고 토큰이 유효한 건가요?</summary><p>아니요. JWT의 Header와 Payload는 단순 Base64URL 인코딩이라 누구나 읽을 수 있습니다. 위조 여부는 서명 검증을 통과해야 알 수 있습니다.</p></details>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="bottom" aria-label="광고"></div>
+
+      <section class="band related-band" aria-labelledby="related-title">
+        <div class="wrap">
+          <h2 id="related-title" class="subhead" style="margin-bottom:16px">다른 도구</h2>
+          <div class="related">
+            <a href="/developer/json/"><b>JSON Formatter / Validator</b><span>JSON 정렬·검증</span></a>
+            <a href="/developer/yaml/"><b>JSON ↔ YAML 변환</b><span>JSON과 YAML 상호 변환</span></a>
+            <a href="/developer/base64/"><b>Base64 Encoder / Decoder</b><span>텍스트·파일 Base64 변환</span></a>
+            <a href="/developer/url/"><b>URL Encoder / Decoder</b><span>URL 인코딩·쿼리 분석</span></a>
+            <a href="/developer/timestamp/"><b>Timestamp Converter</b><span>Unix 시간 ↔ 날짜 변환</span></a>
+            <a href="/developer/image/"><b>이미지 압축 · 변환</b><span>JPG·PNG·WebP 압축</span></a>
+          </div>
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="wrap">
+          <div>
+            <div class="footer-brand">Bluedove's Developer Playground</div>
+            <p>모든 도구는 브라우저 안에서만 동작하며 입력한 데이터를 서버로 보내지 않습니다.</p>
+            <p>© 2004–<span data-year>2026</span> bluedove.co.kr</p>
+          </div>
+          <ul class="footer-links">
+            <li><a href="/">홈</a></li>
+            <li><a href="/#tools">도구 목록</a></li>
+            <li><a href="/#about">개발자 소개</a></li>
+            <li><a href="/sitemap.xml">사이트맵</a></li>
+          </ul>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/js/site.js?v=20261121" defer></script>
+  <script src="/js/tools/jwt.js?v=20261121" defer></script>
+</body>
+</html>

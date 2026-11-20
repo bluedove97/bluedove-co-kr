@@ -46,3 +46,14 @@ next-env.d.ts
 .eslintcache
 .turbo
 .swc
+
+# claude
+.claude
+CLAUDE.md
+design.md
+tmp/
+.htaccess
+ads.txt
+# legacy (FTP 업로드 제외)
+_legacy/
+_workspace/

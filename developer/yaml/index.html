@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JSON ↔ YAML 변환기 — JSON to YAML, YAML to JSON | Bluedove</title>
+  <meta name="description" content="JSON을 YAML로, YAML을 JSON으로 변환하는 온라인 도구. 들여쓰기 설정, 다중 문서(---) YAML 지원, 오류 위치 표시. 쿠버네티스·docker-compose 설정 변환에 유용하며 데이터는 브라우저에서만 처리됩니다.">
+  <meta name="keywords" content="JSON to YAML, YAML to JSON, JSON YAML 변환, YAML 변환기, YAML 파서, 쿠버네티스 YAML, docker-compose YAML">
+  <meta name="author" content="bluedove">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f5f6f7">
+  <link rel="canonical" href="https://bluedove.co.kr/developer/yaml/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bluedove's Developer Playground">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="JSON ↔ YAML 변환기 — JSON to YAML, YAML to JSON | Bluedove">
+  <meta property="og:description" content="JSON을 YAML로, YAML을 JSON으로 변환하는 온라인 도구. 들여쓰기 설정, 다중 문서(---) YAML 지원, 오류 위치 표시. 쿠버네티스·docker-compose 설정 변환에 유용하며 데이터는 브라우저에서만 처리됩니다.">
+  <meta property="og:url" content="https://bluedove.co.kr/developer/yaml/">
+  <meta property="og:image" content="https://bluedove.co.kr/image/bluedove_welcome.png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JSON ↔ YAML 변환기 — JSON to YAML, YAML to JSON | Bluedove">
+  <meta name="twitter:description" content="JSON을 YAML로, YAML을 JSON으로 변환하는 온라인 도구. 들여쓰기 설정, 다중 문서(---) YAML 지원, 오류 위치 표시. 쿠버네티스·docker-compose 설정 변환에 유용하며 데이터는 브라우저에서만 처리됩니다.">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preload" href="/fonts/MaruBuri-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css?v=20261121">
+
+  <!-- Google AdSense (승인 후 사용)
+       1) 아래 script 주석 해제 + ca-pub 값 교체
+       2) <html> 태그에 class="ads-enabled" 추가 → .ad-slot 영역이 표시됨
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"JSON ↔ YAML 변환","url":"https://bluedove.co.kr/developer/yaml/","description":"JSON을 YAML로, YAML을 JSON으로 변환하는 온라인 도구. 들여쓰기 설정, 다중 문서(---) YAML 지원, 오류 위치 표시. 쿠버네티스·docker-compose 설정 변환에 유용하며 데이터는 브라우저에서만 처리됩니다.","inLanguage":"ko-KR","applicationCategory":"DeveloperApplication","operatingSystem":"Any (Web Browser)","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isPartOf":{"@id":"https://bluedove.co.kr/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://bluedove.co.kr/"},{"@type":"ListItem","position":2,"name":"Developer Tools","item":"https://bluedove.co.kr/developer/json/"},{"@type":"ListItem","position":3,"name":"JSON ↔ YAML 변환","item":"https://bluedove.co.kr/developer/yaml/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"여러 문서가 들어 있는 YAML(--- 구분)도 변환되나요?","acceptedAnswer":{"@type":"Answer","text":"네. 문서가 2개 이상이면 JSON 배열로 변환합니다. 반대로 JSON 배열을 YAML로 바꿀 때 '배열을 여러 문서로 나누기'를 켜면 --- 로 구분된 다중 문서가 됩니다."}},{"@type":"Question","name":"YAML 앵커(&)와 별칭(*)도 지원하나요?","acceptedAnswer":{"@type":"Answer","text":"네. YAML을 읽을 때 앵커와 별칭을 풀어서 JSON 값으로 펼칩니다."}},{"@type":"Question","name":"어떤 라이브러리를 사용하나요?","acceptedAnswer":{"@type":"Answer","text":"검증된 오픈소스 파서 js-yaml(MIT 라이선스)을 사이트에 직접 포함해서 사용합니다. 외부 CDN이나 서버를 거치지 않습니다."}}]}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#content">본문 바로가기</a>
+
+  <header class="topbar">
+    <button class="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="메뉴 열기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand" href="/" aria-label="Bluedove's Developer Playground 홈">
+      <!-- <span class="brand-mark" aria-hidden="true">bd</span> -->
+      <span><span class="brand-name">Bluedove's</span> <span class="brand-sub">Developer Playground</span></span>
+    </a>
+    <span class="topbar-spacer"></span>
+    <a class="topbar-link hide-sm" href="/#tools">Tools</a>
+    <a class="topbar-link" href="/#about">About</a>
+  </header>
+
+  <div class="shell">
+    <nav id="sidebar" class="sidebar" aria-label="주 메뉴">
+      <ul class="nav-list nav-home"><li><a class="nav-link" href="/"><span class="nav-ico" aria-hidden="true">~/</span><span>HOME · INTRO</span></a></li></ul>
+      <div class="nav-group">
+        <div class="nav-title">Developer Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/developer/json/"><span class="nav-ico" aria-hidden="true">{ }</span><span>JSON Formatter / Validator</span></a></li>
+          <li><a class="nav-link" href="/developer/yaml/" aria-current="page"><span class="nav-ico" aria-hidden="true">YML</span><span>JSON ↔ YAML 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/base64/"><span class="nav-ico" aria-hidden="true">B64</span><span>Base64 Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/jwt/"><span class="nav-ico" aria-hidden="true">JWT</span><span>JWT Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/url/"><span class="nav-ico" aria-hidden="true">%20</span><span>URL Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/timestamp/"><span class="nav-ico" aria-hidden="true">TS</span><span>Timestamp Converter</span></a></li>
+          <li><a class="nav-link" href="/developer/image/"><span class="nav-ico" aria-hidden="true">IMG</span><span>이미지 압축 · 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/diff/"><span class="nav-ico" aria-hidden="true">DIF</span><span>텍스트 비교 · 변환</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Daily Life Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/daily/overseas/"><span class="nav-ico" aria-hidden="true">TZ</span><span>해외시간 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/age/"><span class="nav-ico" aria-hidden="true">AGE</span><span>만나이 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/fuel/"><span class="nav-ico" aria-hidden="true">KM</span><span>연비 계산기</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Playground</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/playground/browser/"><span class="nav-ico" aria-hidden="true">FPS</span><span>브라우저 성능 테스트</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <main id="content" class="main">
+      <nav class="crumbs" aria-label="현재 위치">
+        <ol>
+          <li><a href="/">홈</a></li>
+          <li><a href="/developer/json/">Developer Tools</a></li>
+          <li><span aria-current="page">JSON ↔ YAML 변환</span></li>
+        </ol>
+      </nav>
+      <section class="hero-band">
+        <div class="wrap">
+          <p class="hero-kicker">Developer Tools / yaml</p>
+          <h1 class="hero-title">JSON ↔ YAML 변환</h1>
+          <p class="hero-desc">JSON을 YAML로, YAML을 JSON으로 바꿉니다.<br/>쿠버네티스 매니페스트나 docker-compose 파일, CI 설정, springboot의 설정을 옮길 때 편합니다.</p>
+          <div class="hero-badges">
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>브라우저에서만 처리</span>
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>무료 · 회원가입 없음</span>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="top" aria-label="광고"></div>
+
+      <div class="page-body">
+<section class="tool">
+          <div class="wrap">
+            <div class="toolbar" role="group" aria-label="변환 옵션">
+              <label class="inline-field">들여쓰기
+                <select class="select select-sm" id="indent">
+                  <option value="2">2칸</option>
+                  <option value="4">4칸</option>
+                </select>
+              </label>
+              <label class="check"><input type="checkbox" id="multi-doc"> JSON 배열을 여러 YAML 문서로 나누기 (---)</label>
+              <label class="check"><input type="checkbox" id="sort-keys"> 키 이름순 정렬</label>
+            </div>
+
+            <div class="yaml-grid">
+              <div class="field">
+                <div class="pane-head">
+                  <label class="label" for="json-pane">JSON</label>
+                  <div class="btn-row">
+                    <button class="btn btn-ghost btn-sm" type="button" id="json-sample">예시</button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-copy="#json-pane">복사</button>
+                    <button class="btn btn-ghost btn-sm" type="button" id="json-clear">지우기</button>
+                  </div>
+                </div>
+                <textarea id="json-pane" class="textarea code-area" rows="20" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder='{"apiVersion":"v1","kind":"Service"}'></textarea>
+              </div>
+
+              <div class="yaml-actions" role="group" aria-label="변환 방향">
+                <button class="btn" type="button" id="to-yaml" aria-label="JSON을 YAML로 변환">JSON → YAML</button>
+                <button class="btn" type="button" id="to-json" aria-label="YAML을 JSON으로 변환">YAML → JSON</button>
+              </div>
+
+              <div class="field">
+                <div class="pane-head">
+                  <label class="label" for="yaml-pane">YAML</label>
+                  <div class="btn-row">
+                    <button class="btn btn-ghost btn-sm" type="button" id="yaml-sample">예시</button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-copy="#yaml-pane">복사</button>
+                    <button class="btn btn-ghost btn-sm" type="button" id="yaml-clear">지우기</button>
+                  </div>
+                </div>
+                <textarea id="yaml-pane" class="textarea code-area" rows="20" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="apiVersion: v1&#10;kind: Service"></textarea>
+              </div>
+            </div>
+            <div id="yaml-status" class="status" role="status" aria-live="polite" style="margin-top:16px"></div>
+          </div>
+        </section>
+        <style>
+          .yaml-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 16px; align-items: stretch; }
+          .yaml-actions { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+          @media (max-width: 899px) {
+            .yaml-grid { grid-template-columns: minmax(0, 1fr); }
+            .yaml-actions { flex-direction: row; }
+            .yaml-actions .btn { flex: 1; }
+          }
+        </style>
+      </div>
+
+      <section class="band band-neutral" aria-labelledby="guide-title">
+        <div class="wrap prose">
+          <h2 id="guide-title">사용 방법</h2>
+          <ol>
+            <li>JSON을 YAML로 바꾸려면 왼쪽에 JSON을 넣고 <strong>JSON → YAML</strong>을 누릅니다.</li>
+            <li>YAML을 JSON으로 바꾸려면 오른쪽에 YAML을 넣고 <strong>YAML → JSON</strong>을 누릅니다.</li>
+            <li>문법 오류가 있으면 줄과 칸 위치를 알려 줍니다.</li>
+          </ol>
+          <h3>JSON과 YAML, 언제 무엇을 쓸까</h3>
+          <p>JSON은 기계가 주고받기 좋은 엄격한 형식이라 API 응답과 설정 파일에 널리 쓰입니다. YAML은 들여쓰기로 구조를 나타내고 주석을 달 수 있어서 사람이 직접 고치는 설정 파일에 많이 씁니다. 쿠버네티스 매니페스트, docker-compose, GitHub Actions, GitLab CI가 YAML을 씁니다.</p>
+          <h3>변환할 때 알아 둘 점</h3>
+          <ul>
+            <li>YAML의 <strong>주석(#)</strong>은 JSON에 담을 수 없어서 변환하면 사라집니다.</li>
+            <li><code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>는 YAML 1.2 기준으로 문자열로 처리합니다. 불리언이 필요하면 <code>true</code>/<code>false</code>를 쓰세요.</li>
+            <li><code>0755</code>처럼 앞에 0이 붙은 값이나 <code>1.10</code> 같은 버전 문자열은 따옴표로 감싸야 숫자로 바뀌지 않습니다.</li>
+          </ul>
+          <h3>자주 묻는 질문</h3>
+          <div class="faq">
+            <details><summary>여러 문서가 들어 있는 YAML(--- 구분)도 변환되나요?</summary><p>네. 문서가 2개 이상이면 JSON 배열로 변환합니다. 반대로 JSON 배열을 YAML로 바꿀 때 '배열을 여러 문서로 나누기'를 켜면 --- 로 구분된 다중 문서가 됩니다.</p></details>
+            <details><summary>YAML 앵커(&amp;)와 별칭(*)도 지원하나요?</summary><p>네. YAML을 읽을 때 앵커와 별칭을 풀어서 JSON 값으로 펼칩니다.</p></details>
+            <details><summary>어떤 라이브러리를 사용하나요?</summary><p>검증된 오픈소스 파서 js-yaml(MIT 라이선스)을 사이트에 직접 포함해서 사용합니다. 외부 CDN이나 서버를 거치지 않습니다.</p></details>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="bottom" aria-label="광고"></div>
+
+      <section class="band related-band" aria-labelledby="related-title">
+        <div class="wrap">
+          <h2 id="related-title" class="subhead" style="margin-bottom:16px">다른 도구</h2>
+          <div class="related">
+            <a href="/developer/json/"><b>JSON Formatter / Validator</b><span>JSON 정렬·검증</span></a>
+            <a href="/developer/base64/"><b>Base64 Encoder / Decoder</b><span>텍스트·파일 Base64 변환</span></a>
+            <a href="/developer/jwt/"><b>JWT Decoder</b><span>토큰 파싱·서명 검증</span></a>
+            <a href="/developer/url/"><b>URL Encoder / Decoder</b><span>URL 인코딩·쿼리 분석</span></a>
+            <a href="/developer/timestamp/"><b>Timestamp Converter</b><span>Unix 시간 ↔ 날짜 변환</span></a>
+            <a href="/developer/image/"><b>이미지 압축 · 변환</b><span>JPG·PNG·WebP 압축</span></a>
+          </div>
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="wrap">
+          <div>
+            <div class="footer-brand">Bluedove's Developer Playground</div>
+            <p>모든 도구는 브라우저 안에서만 동작하며 입력한 데이터를 서버로 보내지 않습니다.</p>
+            <p>© 2004–<span data-year>2026</span> bluedove.co.kr</p>
+          </div>
+          <ul class="footer-links">
+            <li><a href="/">홈</a></li>
+            <li><a href="/#tools">도구 목록</a></li>
+            <li><a href="/#about">개발자 소개</a></li>
+            <li><a href="/sitemap.xml">사이트맵</a></li>
+          </ul>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/js/site.js?v=20261121" defer></script>
+  <script src="/js/vendor/js-yaml.min.js" defer></script>
+  <script src="/js/tools/yaml.js?v=20261121" defer></script>
+</body>
+</html>

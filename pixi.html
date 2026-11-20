@@ -1,0 +1,275 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+    <title> pixi.js fo bluedove</title>
+    <style>
+    body,html {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+        line-height: 1;
+    }
+    </style>
+</head>
+<body>
+
+<script src="js/pixi/jquery-2.1.3.min.js"></script>
+<script src="js/pixi/app.js"></script>
+<script src="js/pixi/pixi.js"></script>
+<script src="js/pixi/pixi-spine.js"></script>
+<script src="js/data.js?20241216"></script>
+<script>
+var gi;
+var gtimer5;
+
+
+
+var gRightText;
+var renderer;
+var ua = "";
+var connType = "";
+var vShowSign=false;
+if ( /iphone/.test(ua) || /android/.test(ua) || /opera/.test(ua) || /bada/.test(ua) ) {
+	connType = "M";
+	renderer = PIXI.autoDetectRenderer(360, 300);
+}
+else{
+	connType = "P";
+	renderer = PIXI.autoDetectRenderer(1024, 300);
+}
+
+document.body.appendChild(renderer.view);
+
+// create the root of the scene graph
+var stage = new PIXI.Container();
+
+// load spine data
+PIXI.loader
+    .add('pixie', 'js/pixi/Pixie.json')
+    .load(onAssetsLoaded);
+
+var postition = 0,
+    background,
+    background2,
+    foreground,
+    foreground2;
+
+stage.interactive = true;
+
+function onAssetsLoaded(loader,res)
+{
+    background = PIXI.Sprite.fromImage('js/pixi/iP4_BGtile4.jpg');
+    background2 = PIXI.Sprite.fromImage('js/pixi/iP4_BGtile4.jpg');
+    stage.addChild(background);
+    stage.addChild(background2);
+
+    foreground = PIXI.Sprite.fromImage('js/pixi/blank.gif');
+    foreground2 = PIXI.Sprite.fromImage('js/pixi/blank.gif');
+    stage.addChild(foreground);
+    stage.addChild(foreground2);
+    foreground.position.y = foreground2.position.y = 640 - foreground2.height;
+
+    var pixie = new PIXI.spine.Spine(res.pixie.spineData);
+
+    var scale = 0.3;
+
+    pixie.position.x = 1024 / 6;
+    pixie.position.y = 250;
+
+    pixie.scale.x = pixie.scale.y = scale;
+
+    stage.addChild(pixie);
+
+    pixie.stateData.setMixByName('running', 'jump', 0.2);
+    pixie.stateData.setMixByName('jump', 'running', 0.4);
+
+    pixie.state.setAnimationByName(0, 'running', true);
+
+    stage.on('mousedown', onTouchStart);
+    stage.on('touchstart', onTouchStart);
+
+    function onTouchStart()
+    {
+		gi = gi%gArr.length ;
+		stage.removeChild(gRightText);
+		gRightText = new PIXI.Text(gArr[gi],gStyleArr[getRandNumber(10)]);
+		gRightText.x = 150;
+		gRightText.y = 80;
+		gRightText.anchor.x = 0.5;
+		gRightText.anchor.y = 0.5;
+		gRightText.anchor.set(0.5);
+		stage.addChild(gRightText);
+		gi++;
+
+		clearInterval(gtimer5);
+
+		gtimer5 = setInterval(function(){ //interval 함수 호출
+			gi = gi%gArr.length ;
+			stage.removeChild(gRightText);
+			gRightText = new PIXI.Text(gArr[gi],gStyleArr[getRandNumber(10)]);
+			//gRightText.x = Math.floor(Math.random() * 350);
+			//gRightText.y = Math.floor(Math.random() * 220);
+			//if(gRightText.x <150) gRightText.x = 150;
+			//if(gRightText.y <50) gRightText.y = 50;
+			gRightText.x = 150;
+			gRightText.y = 80;
+			gRightText.anchor.x = 0.5;
+			gRightText.anchor.y = 0.5;
+			gRightText.anchor.set(0.5);
+			stage.addChild(gRightText);
+			gi++;
+			
+		}, 10000);
+
+
+        pixie.state.setAnimationByName(0, 'jump', false);
+        pixie.state.addAnimationByName(0, 'running', true, 0);
+    }
+
+
+
+	var style = {
+		/*font : '36px Arial bold italic',*/
+		font : '18px dotum bold',
+		/*
+		fill : '#F7EDCA',
+		stroke : '#4a1850',
+		strokeThickness : 5,
+		*/
+		/*
+		dropShadow : true,
+		dropShadowColor : '#000000',
+		dropShadowAngle : Math.PI / 6,
+		dropShadowDistance : 6,
+		*/
+		wordWrap : true,
+		wordWrapWidth : 440
+	};
+
+	gRightText = new PIXI.Text("Bluedove's\nDevelopment History.\nTouch the screen.",style);
+	gRightText.x = 180;
+	gRightText.y = 50;
+	gRightText.anchor.x = 0.5;
+	gRightText.anchor.y = 0.5;
+	gRightText.anchor.set(0.5);
+
+	stage.addChild(gRightText);
+	gi = 0;
+	gtimer5 = setInterval(function(){ //interval 함수 호출
+		gi = gi%gArr.length ;
+		stage.removeChild(gRightText);
+		gRightText = new PIXI.Text(gArr[gi],style);
+		//gRightText.x = Math.floor(Math.random() * 350);
+		//gRightText.y = Math.floor(Math.random() * 220);
+		//if(gRightText.x <150) gRightText.x = 150;
+		//if(gRightText.y <50) gRightText.y = 50;
+		gRightText.x = 150;
+		gRightText.y = 80;
+		gRightText.anchor.x = 0.5;
+		gRightText.anchor.y = 0.5;
+		gRightText.anchor.set(0.5);
+		stage.addChild(gRightText);
+		gi++;
+		
+	}, 5000);
+
+    animate();
+}
+
+
+function animate()
+{
+    postition += 10;
+
+    background.position.x = -(postition * 0.6);
+    background.position.x %= 2156 * 2;
+    if(background.position.x < 0)
+    {
+        background.position.x += 2156 * 2;
+    }
+    background.position.x -= 2156;
+
+    background2.position.x = -(postition * 0.6) + 2156;
+    background2.position.x %= 2156 * 2;
+    if(background2.position.x < 0)
+    {
+        background2.position.x += 2156 * 2;
+    }
+    background2.position.x -= 2156;
+
+    foreground.position.x = -postition;
+    foreground.position.x %= 2156 * 2;
+    if(foreground.position.x < 0)
+    {
+        foreground.position.x += 2156 * 2;
+    }
+    foreground.position.x -= 2156;
+
+    foreground2.position.x = -postition + 2156;
+    foreground2.position.x %= 2156 * 2;
+    if(foreground2.position.x < 0)
+    {
+        foreground2.position.x += 2156 * 2;
+    }
+    foreground2.position.x -= 2156;
+
+    requestAnimationFrame(animate);
+
+    renderer.render(stage);
+}
+
+function getRandNumber(max)
+{
+	var t = Math.floor(Math.random()*max);
+	return t;
+}
+
+/*
+function animate_backup()
+{
+    postition += 10;
+
+    background.position.x = -(postition * 0.6);
+    background.position.x %= 1286 * 2;
+    if(background.position.x < 0)
+    {
+        background.position.x += 1286 * 2;
+    }
+    background.position.x -= 1286;
+
+    background2.position.x = -(postition * 0.6) + 1286;
+    background2.position.x %= 1286 * 2;
+    if(background2.position.x < 0)
+    {
+        background2.position.x += 1286 * 2;
+    }
+    background2.position.x -= 1286;
+
+    foreground.position.x = -postition;
+    foreground.position.x %= 1286 * 2;
+    if(foreground.position.x < 0)
+    {
+        foreground.position.x += 1286 * 2;
+    }
+    foreground.position.x -= 1286;
+
+    foreground2.position.x = -postition + 1286;
+    foreground2.position.x %= 1286 * 2;
+    if(foreground2.position.x < 0)
+    {
+        foreground2.position.x += 1286 * 2;
+    }
+    foreground2.position.x -= 1286;
+
+    requestAnimationFrame(animate);
+
+    renderer.render(stage);
+}
+*/
+</script>
+</body>
+</html>

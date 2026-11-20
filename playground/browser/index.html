@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>브라우저 성능 테스트 — 어항 물고기 FPS 벤치마크 | Bluedove</title>
+  <meta name="description" content="어항 물고기로 하는 브라우저 성능 테스트(벤치마크). 시작하면 0.1초마다 SVG 물고기를 1마리씩 늘리며 실시간 FPS와 프레임 시간을 측정하고 FPS 20 미만이 10초 이어지면 최종 점수를 보여 줍니다.">
+  <meta name="keywords" content="브라우저 성능 테스트, 브라우저 벤치마크, FPS 테스트, 렌더링 성능, SVG 애니메이션 성능, 컴퓨터 성능 테스트, 어항 테스트, 웹 벤치마크">
+  <meta name="author" content="bluedove">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#f5f6f7">
+  <link rel="canonical" href="https://bluedove.co.kr/playground/browser/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bluedove's Developer Playground">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="브라우저 성능 테스트 — 어항 물고기 FPS 벤치마크 | Bluedove">
+  <meta property="og:description" content="어항 물고기로 하는 브라우저 성능 테스트(벤치마크). 시작하면 0.1초마다 SVG 물고기를 1마리씩 늘리며 실시간 FPS와 프레임 시간을 측정하고 FPS 20 미만이 10초 이어지면 최종 점수를 보여 줍니다.">
+  <meta property="og:url" content="https://bluedove.co.kr/playground/browser/">
+  <meta property="og:image" content="https://bluedove.co.kr/image/bluedove_welcome.png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="브라우저 성능 테스트 — 어항 물고기 FPS 벤치마크 | Bluedove">
+  <meta name="twitter:description" content="어항 물고기로 하는 브라우저 성능 테스트(벤치마크). 시작하면 0.1초마다 SVG 물고기를 1마리씩 늘리며 실시간 FPS와 프레임 시간을 측정하고 FPS 20 미만이 10초 이어지면 최종 점수를 보여 줍니다.">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preload" href="/fonts/MaruBuri-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css?v=20261121">
+  <link rel="stylesheet" href="/css/browser.css?v=20261119">
+
+  <!-- Google AdSense (승인 후 사용)
+       1) 아래 script 주석 해제 + ca-pub 값 교체
+       2) <html> 태그에 class="ads-enabled" 추가 → .ad-slot 영역이 표시됨
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"브라우저 성능 테스트","url":"https://bluedove.co.kr/playground/browser/","description":"어항 물고기로 하는 브라우저 성능 테스트(벤치마크). 시작하면 0.1초마다 SVG 물고기를 1마리씩 늘리며 실시간 FPS와 프레임 시간을 측정하고 FPS 20 미만이 10초 이어지면 최종 점수를 보여 줍니다.","inLanguage":"ko-KR","applicationCategory":"GameApplication","operatingSystem":"Any (Web Browser)","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"isPartOf":{"@id":"https://bluedove.co.kr/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://bluedove.co.kr/"},{"@type":"ListItem","position":2,"name":"Playground","item":"https://bluedove.co.kr/playground/browser/"},{"@type":"ListItem","position":3,"name":"브라우저 성능 테스트","item":"https://bluedove.co.kr/playground/browser/"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"점수는 어떻게 매겨지나요?","acceptedAnswer":{"@type":"Answer","text":"FPS가 20 미만으로 10초 동안 계속 유지되면 테스트가 끝나고 그 시점의 물고기 수가 점수가 됩니다. 중간에 FPS가 20 이상으로 회복되면 10초 카운트다운은 처음부터 다시 시작합니다."}},{"@type":"Question","name":"다른 탭으로 가면 어떻게 되나요?","acceptedAnswer":{"@type":"Answer","text":"브라우저는 보이지 않는 탭의 애니메이션을 멈추기 때문에, 탭이 숨겨지면 측정을 일시정지하고 카운트다운을 초기화합니다."}},{"@type":"Question","name":"점수가 기기마다 다른 이유는요?","acceptedAnswer":{"@type":"Answer","text":"CPU·GPU 성능, 화면 해상도와 주사율, 브라우저 종류, 절전 모드, 확장 프로그램 등에 따라 렌더링 성능이 달라집니다. 같은 기기에서 브라우저끼리 비교해 보는 것도 재미있습니다."}}]}]}</script>
+</head>
+<body>
+  <a class="skip-link" href="#content">본문 바로가기</a>
+
+  <header class="topbar">
+    <button class="nav-toggle" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="메뉴 열기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand" href="/" aria-label="Bluedove's Developer Playground 홈">
+      <!-- <span class="brand-mark" aria-hidden="true">bd</span> -->
+      <span><span class="brand-name">Bluedove's</span> <span class="brand-sub">Developer Playground</span></span>
+    </a>
+    <span class="topbar-spacer"></span>
+    <a class="topbar-link hide-sm" href="/#tools">Tools</a>
+    <a class="topbar-link" href="/#about">About</a>
+  </header>
+
+  <div class="shell">
+    <nav id="sidebar" class="sidebar" aria-label="주 메뉴">
+      <ul class="nav-list nav-home"><li><a class="nav-link" href="/"><span class="nav-ico" aria-hidden="true">~/</span><span>HOME · INTRO</span></a></li></ul>
+      <div class="nav-group">
+        <div class="nav-title">Developer Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/developer/json/"><span class="nav-ico" aria-hidden="true">{ }</span><span>JSON Formatter / Validator</span></a></li>
+          <li><a class="nav-link" href="/developer/yaml/"><span class="nav-ico" aria-hidden="true">YML</span><span>JSON ↔ YAML 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/base64/"><span class="nav-ico" aria-hidden="true">B64</span><span>Base64 Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/jwt/"><span class="nav-ico" aria-hidden="true">JWT</span><span>JWT Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/url/"><span class="nav-ico" aria-hidden="true">%20</span><span>URL Encoder / Decoder</span></a></li>
+          <li><a class="nav-link" href="/developer/timestamp/"><span class="nav-ico" aria-hidden="true">TS</span><span>Timestamp Converter</span></a></li>
+          <li><a class="nav-link" href="/developer/image/"><span class="nav-ico" aria-hidden="true">IMG</span><span>이미지 압축 · 변환</span></a></li>
+          <li><a class="nav-link" href="/developer/diff/"><span class="nav-ico" aria-hidden="true">DIF</span><span>텍스트 비교 · 변환</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Daily Life Tools</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/daily/overseas/"><span class="nav-ico" aria-hidden="true">TZ</span><span>해외시간 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/age/"><span class="nav-ico" aria-hidden="true">AGE</span><span>만나이 계산기</span></a></li>
+          <li><a class="nav-link" href="/daily/fuel/"><span class="nav-ico" aria-hidden="true">KM</span><span>연비 계산기</span></a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <div class="nav-title">Playground</div>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="/playground/browser/" aria-current="page"><span class="nav-ico" aria-hidden="true">FPS</span><span>브라우저 성능 테스트</span></a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="scrim" aria-hidden="true"></div>
+
+    <main id="content" class="main">
+      <nav class="crumbs" aria-label="현재 위치">
+        <ol>
+          <li><a href="/">홈</a></li>
+          <li><a href="/playground/browser/">Playground</a></li>
+          <li><span aria-current="page">브라우저 성능 테스트</span></li>
+        </ol>
+      </nav>
+      <section class="hero-band">
+        <div class="wrap">
+          <p class="hero-kicker">Playground / browser</p>
+          <h1 class="hero-title">브라우저 성능 테스트</h1>
+          <p class="hero-desc">시작하기를 누르면 어항의 물고기가 0.1초마다 한 마리씩 늘어나며 브라우저가 얼마나 버티는지 봅니다. FPS가 20 아래로 떨어진 채 10초가 지나면 그때의 물고기 수가 최종 점수가 됩니다.</p>
+          <div class="hero-badges">
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>브라우저에서만 처리</span>
+            <span class="hero-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>무료 · 회원가입 없음</span>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="top" aria-label="광고"></div>
+
+      <div class="page-body">
+<section class="tool">
+          <div class="wrap stack" style="gap:16px">
+            <div class="hud stat-row" aria-live="off">
+              <div class="stat"><div class="stat-label">물고기</div><div class="stat-value" id="h-fish">1</div></div>
+              <div class="stat"><div class="stat-label">FPS</div><div class="stat-value" id="h-fps">-</div></div>
+              <div class="stat"><div class="stat-label">프레임 시간</div><div class="stat-value" id="h-ft">-</div></div>
+              <div class="stat"><div class="stat-label">경과 시간</div><div class="stat-value" id="h-time">0.0<small>초</small></div></div>
+              <div class="stat"><div class="stat-label">최고 기록</div><div class="stat-value" id="h-best">-</div></div>
+            </div>
+
+            <div class="load">
+              <div class="load-head">
+                <span class="label">브라우저 부하</span>
+                <span class="load-state" id="load-state">대기</span>
+              </div>
+              <div class="load-bar" role="meter" aria-label="브라우저 부하" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="load-meter">
+                <div class="load-fill" id="load-fill"></div>
+                <div class="load-th" title="FPS 20 기준선"></div>
+              </div>
+              <canvas class="fps-chart" id="fps-chart" height="64" aria-label="최근 60초 FPS 그래프" role="img"></canvas>
+            </div>
+
+            <div class="tank" id="tank">
+              <svg class="tank-deco" viewBox="0 0 800 120" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 90 Q120 70 240 92 T480 88 T800 86 V120 H0Z" fill="#e8d9b5"/>
+                <path d="M60 110 C50 80 75 60 62 30 M70 110 C80 85 60 70 78 45" stroke="#2f8f5b" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <path d="M690 112 C700 80 678 64 694 26 M702 112 C690 90 715 70 706 50" stroke="#3aa36a" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <ellipse cx="420" cy="104" rx="26" ry="10" fill="#b9a57f"/>
+                <ellipse cx="452" cy="108" rx="14" ry="6" fill="#a79470"/>
+              </svg>
+              <div class="countdown" id="countdown" hidden aria-live="assertive"></div>
+              <div class="result-layer" id="result" hidden>
+                <div class="result-card" role="dialog" aria-modal="false" aria-labelledby="result-title">
+                  <button class="btn btn-ghost btn-sm result-close" type="button" id="btn-close" aria-label="결과 닫기">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+                  </button>
+                  <p class="meta mono">FINAL SCORE</p>
+                  <h2 id="result-title" class="result-score"><span id="r-score">0</span><small>마리</small></h2>
+                  <p class="result-desc" id="r-desc"></p>
+                  <table class="kv" style="margin-top:12px"><tbody id="r-table"></tbody></table>
+                  <div class="btn-row" style="margin-top:16px;justify-content:center">
+                    <button class="btn" type="button" id="btn-again">다시 하기</button>
+                    <button class="btn btn-outline" type="button" id="btn-share">결과 복사</button>
+                    <button class="btn btn-ghost" type="button" id="btn-close2">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 모바일 전용: 어항 아래 실시간 요약 (위쪽 HUD 가 화면 밖일 때) -->
+            <p class="mini-hud mono" aria-hidden="true">
+              물고기 <b id="m-fish">1</b><span class="sep">·</span>FPS <b id="m-fps">-</b><span class="sep">·</span>경과 <b id="m-time">0.0</b>초
+            </p>
+
+            <div class="controls">
+              <button class="btn ctrl-start" type="button" id="btn-start">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                <span id="btn-start-label">시작하기</span>
+              </button>
+              <button class="btn btn-outline" type="button" id="btn-reset">처음부터</button>
+              <span class="meta controls-help">시작하면 0.1초마다 물고기가 1마리씩 늘어납니다. FPS가 <b>20</b> 아래로 떨어진 채 <b>10초</b>가 지나면 테스트가 끝납니다.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="band band-neutral" aria-labelledby="guide-title">
+        <div class="wrap prose">
+          <h2 id="guide-title">사용 방법</h2>
+          <ol>
+            <li><strong>시작하기</strong>를 누르면 0.1초마다 물고기가 한 마리씩 늘어납니다. 테스트가 끝날 때까지 자동으로 늘어나니 지켜보기만 하면 됩니다.</li>
+            <li>물고기가 늘수록 브라우저가 매 프레임 계산하고 그려야 할 SVG 요소가 많아져 FPS가 떨어집니다. 부하 막대와 그래프로 상태를 확인하세요.</li>
+            <li>FPS가 20 미만으로 떨어지면 어항에 카운트다운이 나타납니다. 10초 동안 회복하지 못하면 그때의 물고기 수가 최종 점수입니다.</li>
+          </ol>
+          <h3>무엇을 측정하나요</h3>
+          <p>각 물고기는 독립된 SVG 요소이고 매 프레임(requestAnimationFrame)마다 자바스크립트가 위치와 방향을 계산해 transform을 바꿉니다. 그래서 자바스크립트 실행 속도, 스타일 계산, 레이어 합성(compositing) 성능이 함께 반영됩니다. FPS는 0.5초마다 실제로 그려진 프레임 수로 계산합니다.</p>
+          <h3>점수를 비교할 때</h3>
+          <ul>
+            <li>120Hz·144Hz 모니터에서는 시작 FPS가 60보다 높게 나옵니다. 판정 기준(20 FPS)은 같습니다.</li>
+            <li>노트북은 전원 연결 여부와 절전 모드에 따라 점수가 크게 달라집니다.</li>
+            <li>다른 탭과 프로그램을 닫고 측정하면 더 일정한 결과가 나옵니다.</li>
+          </ul>
+          <h3>자주 묻는 질문</h3>
+          <div class="faq">
+            <details><summary>점수는 어떻게 매겨지나요?</summary><p>FPS가 20 미만으로 10초 동안 계속 유지되면 테스트가 끝나고 그 시점의 물고기 수가 점수가 됩니다. 중간에 FPS가 20 이상으로 회복되면 10초 카운트다운은 처음부터 다시 시작합니다.</p></details>
+            <details><summary>다른 탭으로 가면 어떻게 되나요?</summary><p>브라우저는 보이지 않는 탭의 애니메이션을 멈추기 때문에, 탭이 숨겨지면 측정을 일시정지하고 카운트다운을 초기화합니다.</p></details>
+            <details><summary>점수가 기기마다 다른 이유는요?</summary><p>CPU·GPU 성능, 화면 해상도와 주사율, 브라우저 종류, 절전 모드, 확장 프로그램 등에 따라 렌더링 성능이 달라집니다. 같은 기기에서 브라우저끼리 비교해 보는 것도 재미있습니다.</p></details>
+          </div>
+        </div>
+      </section>
+      <div class="ad-slot" data-ad-slot="bottom" aria-label="광고"></div>
+
+      <section class="band related-band" aria-labelledby="related-title">
+        <div class="wrap">
+          <h2 id="related-title" class="subhead" style="margin-bottom:16px">다른 도구</h2>
+          <div class="related">
+            <a href="/developer/json/"><b>JSON Formatter / Validator</b><span>JSON 정렬·검증</span></a>
+            <a href="/developer/yaml/"><b>JSON ↔ YAML 변환</b><span>JSON과 YAML 상호 변환</span></a>
+            <a href="/developer/base64/"><b>Base64 Encoder / Decoder</b><span>텍스트·파일 Base64 변환</span></a>
+            <a href="/developer/jwt/"><b>JWT Decoder</b><span>토큰 파싱·서명 검증</span></a>
+            <a href="/developer/url/"><b>URL Encoder / Decoder</b><span>URL 인코딩·쿼리 분석</span></a>
+            <a href="/developer/timestamp/"><b>Timestamp Converter</b><span>Unix 시간 ↔ 날짜 변환</span></a>
+          </div>
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="wrap">
+          <div>
+            <div class="footer-brand">Bluedove's Developer Playground</div>
+            <p>모든 도구는 브라우저 안에서만 동작하며 입력한 데이터를 서버로 보내지 않습니다.</p>
+            <p>© 2004–<span data-year>2026</span> bluedove.co.kr</p>
+          </div>
+          <ul class="footer-links">
+            <li><a href="/">홈</a></li>
+            <li><a href="/#tools">도구 목록</a></li>
+            <li><a href="/#about">개발자 소개</a></li>
+            <li><a href="/sitemap.xml">사이트맵</a></li>
+          </ul>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/js/site.js?v=20261121" defer></script>
+  <script src="/js/tools/browser.js?v=20261119" defer></script>
+</body>
+</html>
