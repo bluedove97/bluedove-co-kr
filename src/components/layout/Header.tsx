@@ -21,7 +21,7 @@ export default function Header() {
       </button>
       <Link className="brand" href="/" aria-label="Bluedove's Developer Playground 홈">
         <span>
-          <span className="brand-name">Bluedove&apos;s</span> <span className="brand-sub">Developer Playground</span>
+          <span className="brand-name">Bluedove&apos;s</span> <span className="brand-sub"><span className="brand-sub-long">Developer </span>Playground</span>
         </span>
       </Link>
       <span className="topbar-spacer"></span>

@@ -3,7 +3,7 @@
 export const SITE_URL = 'https://bluedove.co.kr';
 export const SITE_NAME = "Bluedove's Developer Playground";
 export const SITE_DESCRIPTION =
-  'JSON 포매터, JWT 디코더, Base64·URL 인코더, 타임스탬프 변환, 이미지 압축, 텍스트 Diff, 만나이·연비·해외시간 계산기까지. 설치 없이 브라우저에서 바로 쓰는 개발자 실험실입니다.';
+  'JSON 포매터, JWT 디코더, Base64·URL 인코더, 타임스탬프 변환, 이미지 압축, 텍스트 Diff, QR code 생성, 만나이·연비·해외시간 계산기까지. 설치 없이 브라우저에서 바로 쓰는 개발자 실험실입니다.';
 export const OG_IMAGE = { url: '/image/bluedove_welcome.png', width: 400, height: 400 };
 
 /**
@@ -21,7 +21,7 @@ export const ADSENSE_SLOTS: Record<AdPosition, string> = { top: '1831740503', bo
 
 /** 위치별 광고 사용 여부 — false 인 위치는 광고 자리 자체를 출력하지 않음 (모든 페이지 공통) */
 export const ADSENSE_POSITIONS: Record<AdPosition, boolean> = {
-  top: true, // 상단: 히어로 아래 · 도구 위 (메인은 본문 맨 위)
+  top: false, // 상단: 히어로 아래 · 도구 위 (메인은 본문 맨 위)
   bottom: true, // 하단: 사용 방법·FAQ 아래 · 다른 도구 위 (메인은 본문 맨 아래)
 };
 

@@ -41,6 +41,7 @@ export const MENU: MenuGroup[] = [
       { href: '/developer/jwt/', slug: 'jwt', icon: 'JWT', label: 'JWT Decoder', title: 'JWT Decoder', cardDesc: 'Header·Payload 파싱, 만료 확인, 서명 검증', relatedDesc: '토큰 파싱·서명 검증' },
       { href: '/developer/url/', slug: 'url', icon: '%20', label: 'URL Encoder / Decoder', title: 'URL Encoder / Decoder', cardDesc: '퍼센트 인코딩과 쿼리스트링 분석', relatedDesc: 'URL 인코딩·쿼리 분석' },
       { href: '/developer/timestamp/', slug: 'timestamp', icon: 'TS', label: 'Timestamp Converter', title: 'Timestamp Converter', cardDesc: 'Unix 시간 ↔ KST·UTC·ISO 8601', relatedDesc: 'Unix 시간 ↔ 날짜 변환' },
+      { href: '/developer/uuid/', slug: 'uuid', icon: 'ID', label: 'UUID Generator', title: 'UUID Generator', cardDesc: 'UUID v4 1~100개 한 번에, 하이픈 제거', relatedDesc: 'UUID v4 대량 생성' },
       { href: '/developer/image/', slug: 'image', icon: 'IMG', label: '이미지 압축 · 변환', title: '이미지 압축 · 변환 도구', cardDesc: 'JPG·PNG·WebP, 업로드 없이 압축', relatedDesc: 'JPG·PNG·WebP 압축' },
       { href: '/developer/diff/', slug: 'diff', icon: 'DIF', label: '텍스트 비교 · 변환', title: '텍스트 비교 · 변환 도구', cardDesc: 'Diff, 줄 정렬, 글자 수 세기', relatedDesc: 'Diff·줄 정렬·글자 수' },
     ],
@@ -52,6 +53,7 @@ export const MENU: MenuGroup[] = [
       { href: '/daily/overseas/', slug: 'overseas', icon: 'TZ', label: '해외시간 계산기', title: '해외시간 계산기', cardDesc: '한국 시간과 세계 도시 시차', relatedDesc: '한국 시간 ↔ 세계 시간' },
       { href: '/daily/age/', slug: 'age', icon: 'AGE', label: '만나이 계산기', title: '만나이 계산기', cardDesc: '만 나이, 연 나이, 띠, 다음 생일', relatedDesc: '만 나이·연 나이·띠' },
       { href: '/daily/fuel/', slug: 'fuel', icon: 'KM', label: '연비 계산기', title: '연비 계산기', cardDesc: 'km/L, 금액당 주행거리, km당 연료비', relatedDesc: 'km/L·금액당 주행거리' },
+      { href: '/daily/qr/', slug: 'qr', icon: 'QR', label: 'QR 코드 만들기', title: 'QR 코드 만들기', cardDesc: 'URL·Wi-Fi·연락처·전화 QR, PNG·SVG 저장', relatedDesc: 'URL·Wi-Fi·연락처 QR 생성' },
     ],
   },
   {
@@ -59,6 +61,7 @@ export const MENU: MenuGroup[] = [
     title: 'Playground',
     items: [
       { href: '/playground/browser/', slug: 'browser', icon: 'FPS', label: '브라우저 성능 테스트', title: '브라우저 성능 테스트', cardDesc: '물고기를 늘려 가며 브라우저가 버티는지 측정', relatedDesc: '어항 물고기로 FPS 측정' },
+      { href: '/playground/features/', slug: 'features', icon: 'API', label: '브라우저 기능 진단', title: '브라우저 기능 진단', cardDesc: 'WebGPU·저장소·암호화 등 70여 개 웹 기술 지원 검사', relatedDesc: '웹 API 지원 여부 진단' },
     ],
   },
 ];

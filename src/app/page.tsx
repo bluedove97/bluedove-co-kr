@@ -4,6 +4,7 @@ import AdSlot from '@/components/common/AdSlot';
 import JsonLd from '@/components/common/JsonLd';
 import Runner from '@/components/home/Runner';
 import { HISTORY } from '@/data/history';
+import HistoryList from '@/components/home/HistoryList';
 import { MENU } from '@/data/menu';
 import { pageMetadata } from '@/lib/seo';
 import { ADSENSE_HOME_POSITIONS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     keywords: [
       '개발자 도구', '온라인 개발 도구', 'JSON 포매터', 'JWT 디코더', 'Base64', 'URL 인코딩', '타임스탬프 변환',
-      '이미지 압축', '텍스트 비교', '만나이 계산기', '연비 계산기', '세계 시간', 'bluedove',
+      '이미지 압축', '텍스트 비교', '만나이 계산기', 'QR code 생성', '연비 계산기', '세계 시간', 'bluedove',
     ],
   }),
   openGraph: {
@@ -67,10 +68,10 @@ const STACK: { title: string; items: string[] }[] = [
 ];
 
 const EXT_LINKS = [
-  { href: 'https://proj.pe.kr', name: 'proj.pe.kr', desc: '다른 버전의 프로젝트 이력' },
+  { href: 'https://proj.pe.kr', name: 'proj.pe.kr', desc: '프로젝트 위주의 다른 홈페이지' },
   { href: 'https://home.proj.pe.kr', name: 'home.proj.pe.kr', desc: 'System Dashboard' },
-  { href: 'https://pow.proj.pe.kr', name: 'pow.proj.pe.kr', desc: 'Pow of word' },
-  { href: 'https://xpgames.proj.pe.kr', name: 'xpgames.proj.pe.kr', desc: 'XpGames' },
+  { href: 'https://pow.proj.pe.kr', name: 'pow.proj.pe.kr', desc: '단어 배틀 게임' },
+  { href: 'https://xpgames.proj.pe.kr', name: 'xpgames.proj.pe.kr', desc: 'XP 고전 게임' },
 ];
 
 export default function HomePage() {
@@ -199,14 +200,7 @@ export default function HomePage() {
               </h2>
               <p className="section-lead">이력을 최신순으로 정리했습니다.</p>
             </div>
-            <ol className="history">
-              {history.map((r) => (
-                <li key={r.period + r.name}>
-                  <span className="hist-period">{r.period}</span>
-                  <span className="hist-name">{r.name}</span>
-                </li>
-              ))}
-            </ol>
+            <HistoryList items={history} initial={6} />
           </div>
         </section>
       </div>

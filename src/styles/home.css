@@ -102,6 +102,11 @@
 .history li { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
 .hist-period { font-family: var(--font-mono); font-size: 13px; color: var(--ink-meta); padding-top: 2px; }
 .hist-name { font-size: 15px; font-weight: 300; color: var(--ink-list); }
+.history li[hidden] { display: none; }
+.history li:focus { outline: none; }
+.history li:focus-visible { box-shadow: inset 0 0 0 2px var(--primary); }
+.history-more { display: flex; justify-content: center; margin-top: var(--s-xl); }
+.history-more .btn { min-width: 160px; }
 
 @media (max-width: 1023px) {
   .about-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-2xl); }

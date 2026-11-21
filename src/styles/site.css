@@ -471,13 +471,20 @@ html.ads-enabled .ad-slot { display: block; width: 100%; margin: var(--s-xl) aut
   .band { padding: var(--s-2xl) 0; }
   .surface, .surface-white { padding: var(--s-lg); }
   .result-main { font-size: 22px; }
-  .topbar-link.hide-sm, .brand-sub { display: none; }
+  /* 모바일: 제목을 "Bluedove's Playground" 로 줄임 */
+  .topbar-link.hide-sm, .brand-sub-long { display: none; }
   .related { grid-template-columns: minmax(0, 1fr); }
   .toolbar .btn { flex: 1 1 auto; }
 }
 @media (max-width: 479px) {
   .hero-title { font-size: 26px; }
   .btn-row > .btn { flex: 1 1 auto; }
+  /* 좁은 폰: 글자를 줄이고, 그래도 넘치면 말줄임 (About 링크를 밀어내지 않도록) */
+  .brand { font-size: 16px; min-width: 0; }
+  .brand > span { overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 359px) {
+  .brand { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
