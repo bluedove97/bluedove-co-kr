@@ -1,0 +1,26 @@
+{
+  "name": "bluedove-co-kr",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Bluedove's Developer Playground — Next.js 정적 빌드(out/)로 Apache 웹호스팅에 배포",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "node scripts/postbuild.mjs",
+    "start": "node scripts/serve.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "js-yaml": "^4.3.2",
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}
