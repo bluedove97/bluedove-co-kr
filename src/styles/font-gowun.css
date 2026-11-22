@@ -1,0 +1,29 @@
+/* ── 작은 글씨(15px 이하) → 고운바탕 ─────────────────────────────────────────
+   마루 부리는 가로획이 얇아 일반 PC 모니터(1배율)의 작은 크기에서 뭉개진다.
+   15px 이하로 지정된 본문 계열 텍스트만 고운바탕으로 바꾸고, 제목 · 큰 본문은 마루 부리를 유지한다.
+   - @font-face 는 site.css 에 있다 (GowunBatang-Regular/Bold.woff2, SIL OFL 1.1).
+   - 이 파일은 layout.tsx 에서 가장 마지막에 import 한다 (다른 CSS 의 font-family 보다 우선).
+   - 코드 폰트 요소(.mono, code, pre …)는 :not() 으로 제외 → "meta mono" 같은 조합은 IBM Plex Mono 유지.
+   - 15px 이하 텍스트 클래스를 새로 만들면 아래 목록에 추가한다. */
+:root { --font-small: "Gowun Batang", var(--font-base); }
+
+:is(
+  /* site.css */
+  .topbar-link, .nav-link, .crumbs ol, .hero-badge, .meta, .hint, .label, .btn-sm,
+  .unit-input .unit, .inline-field, .select.select-sm, .input.input-sm, .check, .seg label, .tab,
+  .status, .kv, .kv th, .result-sub, .stat-label, .bullets li, .notice, .related span,
+  .footer, .footer-brand, .toast,
+  /* tools.css */
+  .claim-badge, .img-name, .diff-table tr.gap td, .city-country, .city-meta, .city-diff, .city-dst,
+  .age-rules li, .rule-badge, .qr-empty, .qr-color, .fc-env dt, .fc-counts small, .fc-cat-name small,
+  .fc-cat-no, .fc-item-name, .fc-detail,
+  /* home.css */
+  .runner-hint, .runner-bar, .tool-text span, .ext-links a span, .stack-title, .chips li, .hist-name,
+  /* browser.css */
+  .load-state, .mini-hud,
+  /* webgl.css */
+  .wg-info dd, .wg-stage-msg, .btn.wg-btn-main small, .wg-progress-text, .wg-msg, .wg-mode-ko,
+  .wg-mode-desc, .wg-opt, .wg-mode-meta, .wg-break-meta, .wg-ladder summary, .wg-warn, .wg-table
+):not(.mono, code, kbd, samp, pre) {
+  font-family: var(--font-small);
+}

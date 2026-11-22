@@ -8,6 +8,8 @@
 @font-face { font-family: "MaruBuri"; src: url("/fonts/MaruBuri-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "MaruBuri"; src: url("/fonts/MaruBuri-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
 @font-face { font-family: "MaruBuri"; src: url("/fonts/MaruBuri-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Gowun Batang"; src: url("/fonts/GowunBatang-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Gowun Batang"; src: url("/fonts/GowunBatang-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: "IBM Plex Mono"; src: url("/fonts/IBMPlexMono-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "IBM Plex Mono"; src: url("/fonts/IBMPlexMono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
 @font-face { font-family: "IBM Plex Mono"; src: url("/fonts/IBMPlexMono-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
@@ -72,7 +74,7 @@
   --s-4xl: 72px;
 
   --topbar-h: 60px;
-  --sidebar-w: 264px;
+  --sidebar-w: 280px;
   --content-max: 1080px;
   --gutter: 24px;
 
@@ -168,6 +170,8 @@ ul, ol { margin: 0; padding: 0; }
 .nav-link[aria-current="page"]:hover { color: var(--primary-hover); }
 .nav-ico { flex: 0 0 auto; width: 26px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-meta); text-align: center; }
 .nav-link[aria-current="page"] .nav-ico { color: var(--primary); }
+/* 메뉴 이름은 항상 한 줄 (선택 시 Bold 로 폭이 늘어도 줄바꿈 X). 가장 긴 "JSON Formatter / Validator" 가 Bold 15px 약 187px */
+.nav-text { white-space: nowrap; }
 
 .scrim { display: none; }
 
@@ -479,7 +483,7 @@ html.ads-enabled .ad-slot { display: block; width: 100%; margin: var(--s-xl) aut
 @media (max-width: 479px) {
   .hero-title { font-size: 26px; }
   .btn-row > .btn { flex: 1 1 auto; }
-  /* 좁은 폰: 글자를 줄이고, 그래도 넘치면 말줄임 (About 링크를 밀어내지 않도록) */
+  /* 좁은 폰: 글자를 줄이고, 그래도 넘치면 말줄임 (Tools 링크를 밀어내지 않도록) */
   .brand { font-size: 16px; min-width: 0; }
   .brand > span { overflow: hidden; text-overflow: ellipsis; }
 }
