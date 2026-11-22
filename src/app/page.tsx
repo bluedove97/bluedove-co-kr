@@ -104,8 +104,6 @@ export default function HomePage() {
                 개발자 소개
               </a>
             </div>
-
-            <Runner />
           </div>
         </section>
 
@@ -142,52 +140,58 @@ export default function HomePage() {
         </section>
 
         <section id="about" className="band band-blue" aria-labelledby="about-title">
-          <div className="wrap about-grid">
-            <div className="about-intro">
-              <h2 id="about-title" className="section-title">
-                개발자 소개
-              </h2>
-              <p className="about-lead">2004년부터 웹 서비스와 서버, 인프라를 만들어 온 개발자 bluedove입니다.</p>
-              <p>
-                정부 과제를 시작으로 금융, 유통, 의료, 제조 분야의 시스템을 구축하고 운영해 왔습니다. 쿠버네티스 기반 플랫폼(Certified Kubernetes
-                Administrator)에서 CI/CD 자동화 파이프라인을 구축했으며, 최근에는 LLM API를 이용한 AI Agent 개발도 진행 중입니다
-              </p>
-              <p>이 사이트는 일하면서 자주 쓰는 작은 도구를 만들어 모아 둔 실험실입니다.</p>
+          <div className="wrap">
+            <div className="about-grid">
+              <div className="about-intro">
+                <h2 id="about-title" className="section-title">
+                  개발자 소개
+                </h2>
+                <p className="about-lead">2004년부터 웹 서비스와 서버, 인프라를 만들어 온 개발자 bluedove입니다.</p>
+                <p>
+                  정부 과제를 시작으로 금융, 유통, 의료, 제조 분야의 시스템을 구축하고 운영해 왔습니다. 쿠버네티스 기반 플랫폼(Certified Kubernetes
+                  Administrator)에서 CI/CD 자동화 파이프라인을 구축했으며, 최근에는 LLM API를 이용한 AI Agent 개발도 진행 중입니다
+                </p>
+                <p>이 사이트는 일하면서 자주 쓰는 작은 도구를 만들어 모아 둔 실험실입니다.</p>
 
-              <dl className="contact">
-                <dt>Contact</dt>
-                <dd>
-                  <a id="contact" className="mono" href="#about">
-                    bluek97@bluedove.co.kr
-                  </a>
-                </dd>
-              </dl>
-
-              <h3 className="subhead links-title">Links</h3>
-              <ul className="ext-links">
-                {EXT_LINKS.map((l) => (
-                  <li key={l.href}>
-                    <a href={l.href} target="_blank" rel="noopener">
-                      {l.name}
-                      <span>{l.desc}</span>
+                <dl className="contact">
+                  <dt>Contact</dt>
+                  <dd>
+                    <a id="contact" className="mono" href="#about">
+                      bluek97@bluedove.co.kr
                     </a>
-                  </li>
+                  </dd>
+                </dl>
+
+                <h3 className="subhead links-title">Links</h3>
+                <ul className="ext-links">
+                  {EXT_LINKS.map((l) => (
+                    <li key={l.href}>
+                      <a href={l.href} target="_blank" rel="noopener">
+                        {l.name}
+                        <span>{l.desc}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="about-stack">
+                <h3 className="subhead">Technical Stack</h3>
+                {STACK.map((s) => (
+                  <div className="stack-block" key={s.title}>
+                    <p className="stack-title mono">{s.title}</p>
+                    <ul className="chips">
+                      {s.items.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            <div className="about-stack">
-              <h3 className="subhead">Technical Stack</h3>
-              {STACK.map((s) => (
-                <div className="stack-block" key={s.title}>
-                  <p className="stack-title mono">{s.title}</p>
-                  <ul className="chips">
-                    {s.items.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div className="about-runner">
+              <Runner />
             </div>
           </div>
         </section>

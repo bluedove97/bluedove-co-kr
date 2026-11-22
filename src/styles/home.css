@@ -24,8 +24,8 @@
   touch-action: manipulation;
   transition: box-shadow .15s var(--ease);
 }
-.runner-stage:hover { box-shadow: 0 0 0 2px rgba(255, 255, 255, .45); }
-.runner-stage:focus-visible { outline: none; box-shadow: 0 0 0 3px #fff; }
+.runner-stage:hover { box-shadow: 0 0 0 2px var(--hairline); }
+.runner-stage:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .runner-stage:active .runner-card { transform: scale(.98); }
 .runner-stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .runner-loading { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-mono); font-size: 14px; color: var(--ink-meta); }
@@ -52,10 +52,9 @@
 .runner-card[data-accent="2"] .runner-period { color: #8a3b00; }
 .runner-card[data-accent="3"] .runner-period { color: #6a2bb0; }
 
-.runner-bar { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 14px; color: #c9dbff; }
-.runner-count { font-size: 13px; color: #fff; background: rgba(255, 255, 255, .12); padding: 4px 8px; border-radius: var(--r-sm); white-space: nowrap; }
+.runner-bar { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 14px; color: var(--ink-meta); }
+.runner-count { font-size: 13px; color: var(--primary-deep); background: var(--canvas); padding: 4px 8px; border-radius: var(--r-sm); white-space: nowrap; }
 .runner-help { flex: 1; min-width: 0; }
-
 /* ---------- Tools ---------- */
 .tool-group + .tool-group { margin-top: var(--s-2xl); }
 .tool-group-title { font-size: 20px; font-weight: 600; margin-bottom: 12px; display: flex; gap: 10px; align-items: baseline; }
@@ -79,6 +78,7 @@
 .tool-text span { display: block; margin-top: 2px; font-size: 15px; font-weight: 300; color: var(--ink-list); }
 
 /* ---------- About ---------- */
+.about-runner { margin-top: var(--s-2xl); }
 .about-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--s-3xl); }
 .about-intro p { margin-top: 12px; font-size: 17px; line-height: 1.75; }
 .about-intro .about-lead { margin-top: 16px; font-size: 21px; color: var(--ink-lead); line-height: 1.5; }

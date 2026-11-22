@@ -37,7 +37,7 @@ export default function Runner() {
   const [paused, setPaused] = useState(false);
 
   // 이펙트 내부(애니메이션 루프)와 공유하는 가변 상태
-  const ctl = useRef({ paused: false, tap: () => {}, startAuto: (_ms: number) => {}, stopAuto: () => {} });
+  const ctl = useRef({ paused: false, tap: () => {},startAuto: (_ms: number) => {}, stopAuto: () => {} });
 
   useEffect(() => {
     const stageEl = stageRef.current;
@@ -188,7 +188,12 @@ export default function Runner() {
         else if (!loaded) PIXI.loader.add('pixie', '/js/pixi/Pixie.json').load((_l: any, res: any) => !disposed && onAssets(res.pixie.spineData));
         else PIXI.loader.once('complete', (_l: any, res: any) => !disposed && onAssets(res.pixie.spineData));
       })
-      .catch(() => setCount('로드 실패'));
+      .catch((err) => {
+        console.error('[Runner]', err);
+        if (disposed) return;
+        setLoading(false);
+        setCount('로드 실패');
+      });
 
     const io =
       'IntersectionObserver' in window
@@ -224,7 +229,12 @@ export default function Runner() {
       document.removeEventListener('visibilitychange', onVis);
       window.removeEventListener('resize', onResize);
       try {
-        if (stage) stage.destroy(true);
+        // destroy(true) 는 자식 Sprite 의 텍스처까지 파괴한다. 텍스처는 PIXI 전역 캐시(TextureCache ·
+        // loader.resources 의 spine 아틀라스)에 남아 다시 들어올 때 재사용되므로 자식만 떼어 내고 파괴하지 않는다.
+        if (stage) {
+          stage.removeChildren();
+          stage.destroy();
+        }
         if (renderer) {
           renderer.view.remove();
           renderer.destroy();
@@ -283,8 +293,8 @@ export default function Runner() {
       </div>
       <figcaption className="runner-bar">
         <span className="runner-count mono">{count}</span>
-        <span className="runner-help">캐릭터를 누르면 점프하면서 다음 프로젝트로 넘어갑니다.</span>
-        <button className="btn btn-sm btn-line-dark" type="button" aria-pressed={paused} onClick={togglePause}>
+        <span className="runner-help">캐릭터를 눌러보세요.</span>
+        <button className="btn btn-sm btn-outline" type="button" aria-pressed={paused} onClick={togglePause}>
           {paused ? '다시 달리기' : '일시정지'}
         </button>
       </figcaption>
