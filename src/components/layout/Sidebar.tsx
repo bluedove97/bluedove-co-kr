@@ -13,7 +13,7 @@ function NavLink({ href, icon, label, current }: { href: string; icon: string; l
         <span className="nav-ico" aria-hidden="true">
           {icon}
         </span>
-        <span>{label}</span>
+        <span className="nav-text">{label}</span>
       </Link>
     </li>
   );

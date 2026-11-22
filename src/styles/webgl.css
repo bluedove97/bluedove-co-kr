@@ -1,0 +1,156 @@
+/* 브라우저 GPU 벤치마크 (WebGL Benchmark) — /playground/webgl/ */
+.wg { display: flex; flex-direction: column; gap: var(--s-lg); }
+
+/* ---------- Header + GPU / Browser Information ---------- */
+.wg-head { display: flex; flex-direction: column; gap: 16px; }
+.wg-head-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.wg-title { font-family: var(--font-mono); font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.25; }
+.wg-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.wg-info { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 20px; }
+.wg-info .wide { grid-column: span 2; }
+.wg-info dt { font-size: 12px; font-family: var(--font-mono); color: var(--ink-meta); }
+.wg-info dd { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: var(--ink); word-break: break-word; }
+.wg-info dd.mono { font-size: 14px; }
+
+/* ---------- Live Rendering Preview ---------- */
+.wg-stage {
+  position: relative; overflow: hidden;
+  aspect-ratio: 16 / 9; width: 100%;
+  border-radius: var(--r-lg);
+  background: #0a1020;
+}
+.wg-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.wg-hud {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0;
+  max-width: calc(100% - 20px);
+  padding: 8px 12px; border-radius: var(--r-md);
+  background: rgba(5, 10, 22, .72); color: #e6eefc;
+  font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.wg-hud div { display: flex; gap: 6px; align-items: baseline; }
+.wg-hud dt { color: #8ea4c8; font-size: 11px; }
+.wg-hud dd { margin: 0; font-weight: 600; }
+.wg-stage-label {
+  position: absolute; left: 10px; bottom: 10px; z-index: 2; margin: 0;
+  padding: 5px 10px; border-radius: var(--r-sm);
+  background: rgba(5, 10, 22, .72); color: #e6eefc; font-size: 12px; pointer-events: none;
+}
+.wg-stage-msg { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; padding: 20px; background: rgba(5, 10, 22, .78); color: #e6eefc; text-align: center; font-size: 15px; line-height: 1.6; }
+.wg-stage-msg p { max-width: 520px; }
+
+/* ---------- 실시간 지표 ---------- */
+.wg-live { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.wg-live .stat-value, .wg-summary .stat-value { font-variant-numeric: tabular-nums; font-size: 20px; }
+.wg-live-note { margin-top: -6px; }
+
+/* ---------- 실행 ---------- */
+.wg-run { display: flex; flex-direction: column; gap: 14px; }
+.wg-run-btns { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+.btn.wg-btn-main { min-width: 180px; min-height: 52px; flex-direction: column; gap: 0; line-height: 1.2; font-size: 17px; }
+.btn.wg-btn-main small { font-size: 12px; font-weight: 400; opacity: .8; }
+.wg-phases { list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; }
+.wg-phases li { padding: 6px 8px; border-radius: var(--r-sm); background: var(--chrome); color: var(--ink-meta); font-family: var(--font-mono); font-size: 12px; text-align: center; }
+.wg-phases li.on { background: var(--band-blue); color: var(--primary-deep); font-weight: 600; }
+.wg-phases li.done { background: var(--ok-bg); color: var(--ok); }
+.wg-progress-wrap { display: flex; flex-direction: column; gap: 6px; }
+.wg-progress-text { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--ink-body); }
+.wg-msg { padding: 10px 14px; border-radius: var(--r-md); background: var(--warn-bg); color: var(--warn); font-size: 15px; }
+
+/* ---------- Benchmark Modes ---------- */
+.wg-h2 { font-size: 22px; font-weight: 600; color: var(--ink); line-height: 1.25; margin-top: var(--s-md); }
+.wg-h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin: var(--s-xl) 0 10px; }
+.wg-modes-lead { margin-top: -8px; }
+.wg-modes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.wg-mode { display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid var(--rule); border-radius: var(--r-lg); background: var(--canvas); min-width: 0; }
+.wg-mode-head { display: flex; gap: 8px; align-items: baseline; }
+.wg-mode-head .mono { font-size: 12px; color: var(--ink-meta); }
+.wg-mode-head b { font-size: 16px; color: var(--ink); }
+.wg-mode-ko { font-size: 14px; color: var(--primary-deep); font-weight: 600; }
+.wg-mode-desc { font-size: 14px; color: var(--ink-list); line-height: 1.55; flex: 1; }
+.wg-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--ink-meta); }
+.wg-opt .select { min-width: 0; flex: 0 1 auto; }
+.wg-mode-meta { font-size: 12px; color: var(--ink-meta); }
+.wg-mode-btn { width: 100%; margin-top: 4px; min-height: 44px; }
+
+/* ---------- 결과 ---------- */
+.wg-result { scroll-margin-top: calc(var(--topbar-h) + 16px); }
+.wg-result-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.wg-result-head .wg-h2 { margin-top: 0; }
+.wg-summary { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.wg-total .stat-value { color: var(--primary); font-size: 28px; }
+.wg-summary .stat-value small { white-space: nowrap; }
+.wg-summary .wg-total { grid-column: span 2; }
+.wg-score-note { margin-top: 10px; }
+.wg-break { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.wg-break-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.wg-break-top b { font-size: 16px; color: var(--ink); }
+.wg-break-top .mono { font-size: 16px; font-weight: 600; color: var(--ink); }
+.wg-break-top small { font-size: 13px; font-weight: 400; color: var(--ink-meta); }
+.wg-bar { height: 10px; margin-top: 6px; border-radius: 5px; background: var(--chrome); overflow: hidden; }
+.wg-bar span { display: block; height: 100%; border-radius: 5px; background: var(--primary); transition: width .4s var(--ease); }
+.wg-break-meta { margin-top: 6px; font-size: 13px; color: var(--ink-meta); line-height: 1.6; word-break: break-word; }
+.wg-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.wg-ladder { margin-top: 6px; }
+.wg-ladder summary {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 10px; margin-left: -10px;
+  border-radius: var(--r-sm); font-size: 14px; color: var(--primary-deep); cursor: pointer; list-style: none;
+  transition: background-color .15s var(--ease), color .15s var(--ease);
+}
+.wg-ladder summary::-webkit-details-marker { display: none; }
+.wg-ladder summary::before { content: "▸"; font-size: 12px; transition: transform .15s var(--ease); }
+.wg-ladder[open] summary::before { transform: rotate(90deg); }
+.wg-ladder summary:hover { background: var(--band-blue); }
+.wg-ladder summary:active { background: #d8efff; }
+.wg-ladder summary:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.wg-warn { margin: var(--s-lg) 0 0; padding: 12px 16px 12px 32px; border-radius: var(--r-md); background: var(--warn-bg); color: var(--warn); font-size: 14px; line-height: 1.6; }
+.wg-table-wrap { overflow-x: auto; margin-top: 12px; border: 1px solid var(--rule); border-radius: var(--r-md); }
+.wg-table { width: 100%; border-collapse: collapse; font-size: 14px; white-space: nowrap; }
+.wg-table th, .wg-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); text-align: right; }
+.wg-table thead th { background: var(--chrome); color: var(--ink-meta); font-weight: 600; font-size: 13px; }
+.wg-table th[scope="row"], .wg-table thead th:first-child { text-align: left; font-weight: 600; color: var(--ink); }
+.wg-table tbody tr:last-child th, .wg-table tbody tr:last-child td { border-bottom: 0; }
+.wg-fpsbar { display: block; height: 4px; margin-top: 4px; min-width: 60px; border-radius: 2px; background: var(--chrome); overflow: hidden; }
+.wg-fpsbar span { display: block; height: 100%; background: var(--primary); }
+.wg-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--s-xl); }
+.wg-actions .btn { min-width: 140px; }
+.wg-foot { margin-top: var(--s-sm, 8px); }
+
+@media (max-width: 1023px) {
+  .wg-modes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-info { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .wg-info { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-info .wide { grid-column: 1 / -1; }
+  .wg-stage { margin: 0 calc(var(--gutter) * -1); width: auto; border-radius: 0; }
+  .wg-hud { font-size: 11px; gap: 2px 10px; padding: 6px 8px; top: 6px; left: 6px; }
+  .wg-hud dt { font-size: 10px; }
+  .wg-live { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .wg-live .stat { padding: 10px 12px; }
+  .wg-live .stat-value { font-size: 16px; }
+  .wg-run-btns .btn { flex: 1 1 0; min-width: 0; }
+  .wg-run-btns .btn-ghost { flex: 1 1 100%; }
+  .wg-phases { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .wg-phases li { font-size: 11px; padding: 6px 2px; }
+  .wg-mode { padding: 12px; }
+  .wg-mode-desc { font-size: 13px; }
+  .wg-opt { flex-direction: column; align-items: stretch; }
+  .wg-opt .select { width: 100%; }
+  .wg-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-summary .wg-total { grid-column: 1 / -1; }
+  /* 버튼 3개를 한 줄에 두면 .btn 의 nowrap 때문에 글자가 넘친다 → 복사 · 다운로드 2열 + 다시 실행은 아랫줄 전체 */
+  .wg-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-actions .btn { min-width: 0; padding-left: 10px; padding-right: 10px; }
+  .wg-actions .btn:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 479px) {
+  .wg-live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 359px) {
+  .wg-actions { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wg-bar span { transition: none; }
+}

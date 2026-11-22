@@ -62,6 +62,7 @@ export const MENU: MenuGroup[] = [
     items: [
       { href: '/playground/browser/', slug: 'browser', icon: 'FPS', label: '브라우저 성능 테스트', title: '브라우저 성능 테스트', cardDesc: '물고기를 늘려 가며 브라우저가 버티는지 측정', relatedDesc: '어항 물고기로 FPS 측정' },
       { href: '/playground/features/', slug: 'features', icon: 'API', label: '브라우저 기능 진단', title: '브라우저 기능 진단', cardDesc: 'WebGPU·저장소·암호화 등 70여 개 웹 기술 지원 검사', relatedDesc: '웹 API 지원 여부 진단' },
+      { href: '/playground/webgl/', slug: 'webgl', icon: 'GPU', label: '브라우저 GPU 벤치마크', title: '브라우저 GPU 벤치마크', cardDesc: 'WebGL 2.0 벤치마크, FPS·1% Low·Frame Time 측정', relatedDesc: 'WebGL GPU 벤치마크' },
     ],
   },
 ];

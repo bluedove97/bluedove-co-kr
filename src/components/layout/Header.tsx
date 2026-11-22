@@ -25,10 +25,10 @@ export default function Header() {
         </span>
       </Link>
       <span className="topbar-spacer"></span>
-      <Link className="topbar-link hide-sm" href="/#tools">
+      <Link className="topbar-link" href="/#tools">
         Tools
       </Link>
-      <Link className="topbar-link" href="/#about">
+      <Link className="topbar-link hide-sm" href="/#about">
         About
       </Link>
     </header>

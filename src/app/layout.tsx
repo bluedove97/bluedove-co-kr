@@ -10,6 +10,8 @@ import '@/styles/site.css';
 import '@/styles/tools.css';
 import '@/styles/home.css';
 import '@/styles/browser.css';
+import '@/styles/webgl.css';
+import '@/styles/font-gowun.css'; // 작은 글씨 → 고운바탕. font-family 를 덮어쓰므로 반드시 마지막에 import
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

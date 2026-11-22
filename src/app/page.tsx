@@ -94,7 +94,8 @@ export default function HomePage() {
             </h1>
             <p className="home-lead">
               브라우저에서 바로 쓰는 유용한 개발 도구와 생활 계산기를 제공합니다.
-              <br /> 입력한 데이터는 서버로 가지 않습니다. 설치❌, 가입❌{' '}
+              <br /> 입력한 데이터는 서버로 가지 않습니다.
+              <br /> 설치없음❌, 가입없음❌{' '}
             </p>
             <div className="btn-row home-cta">
               <a className="btn btn-on-dark" href="#tools">
@@ -202,7 +203,7 @@ export default function HomePage() {
               <h2 id="history-title" className="section-title">
                 프로젝트 이력
               </h2>
-              <p className="section-lead">이력을 최신순으로 정리했습니다.</p>
+              <p className="section-lead">지금까지 진행한 프로젝트 리스트</p>
             </div>
             <HistoryList items={history} initial={6} />
           </div>
