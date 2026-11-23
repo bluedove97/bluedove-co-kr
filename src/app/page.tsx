@@ -7,7 +7,7 @@ import { HISTORY } from '@/data/history';
 import HistoryList from '@/components/home/HistoryList';
 import { MENU } from '@/data/menu';
 import { pageMetadata } from '@/lib/seo';
-import { ADSENSE_HOME_POSITIONS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
+import { ADSENSE_HOME_POSITIONS, OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { pad2 } from '@/utils/format';
 
 export const metadata: Metadata = {
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: '/',
-    images: [{ url: '/image/bluedove_welcome.png', width: 400, height: 400 }],
+    images: [OG_IMAGE],
   },
-  twitter: { card: 'summary', title: SITE_NAME, description: SITE_DESCRIPTION },
+  twitter: { card: 'summary_large_image', title: SITE_NAME, description: SITE_DESCRIPTION, images: [OG_IMAGE.url] },
 };
 
 const JSON_LD = {
@@ -114,7 +114,7 @@ export default function HomePage() {
               <h2 id="tools-title" className="section-title">
                 도구
               </h2>
-              <p className="section-lead">자주 쓰는데 매번 검색하게 되는 것들을 한곳에 모았습니다.</p>
+              <p className="section-lead">자주 쓰는데 매번 검색하게 되는 도구들을 한 곳에 모았습니다.</p>
             </div>
 
             {MENU.map((group, gi) => (
@@ -147,12 +147,12 @@ export default function HomePage() {
                 <h2 id="about-title" className="section-title">
                   개발자 소개
                 </h2>
-                <p className="about-lead">2004년부터 웹 서비스와 서버, 인프라를 만들어 온 개발자 bluedove입니다.</p>
+                <p className="about-lead">2004년부터 웹 서비스와 서버, 인프라를 만들어 온 풀스택 개발자 bluedove입니다.</p>
                 <p>
                   정부 과제를 시작으로 금융, 유통, 의료, 제조 분야의 시스템을 구축하고 운영해 왔습니다. 쿠버네티스 기반 플랫폼(Certified Kubernetes
                   Administrator)에서 CI/CD 자동화 파이프라인을 구축했으며, 최근에는 LLM API를 이용한 AI Agent 개발도 진행 중입니다
                 </p>
-                <p>이 사이트는 일하면서 자주 쓰는 작은 도구를 만들어 모아 둔 실험실입니다.</p>
+                <p>이 사이트는 일하면서 자주 쓰는 작은 도구를 만들어 모아 둔 실험실이자 놀이터입니다. 브라우저 안에서만 동작하니 마음껏 사용하세요.</p>
 
                 <dl className="contact">
                   <dt>Contact</dt>

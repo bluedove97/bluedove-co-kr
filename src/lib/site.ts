@@ -4,7 +4,7 @@ export const SITE_URL = 'https://bluedove.co.kr';
 export const SITE_NAME = "Bluedove's Developer Playground";
 export const SITE_DESCRIPTION =
   'JSON 포매터, JWT 디코더, Base64·URL 인코더, 타임스탬프 변환, 이미지 압축, 텍스트 Diff, QR code 생성, 만나이·연비·해외시간 계산기까지. 설치 없이 브라우저에서 바로 쓰는 개발자 실험실입니다.';
-export const OG_IMAGE = { url: '/image/bluedove_welcome.png', width: 400, height: 400 };
+export const OG_IMAGE = { url: '/image/thumb.jpg', width: 1200, height: 630, alt: "Bluedove's Developer Playground — 브라우저에서 바로 쓰는 도구 모음" };
 
 /**
  * Google AdSense (승인 후 사용)

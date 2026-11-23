@@ -30,7 +30,7 @@ export function pageMetadata(o: { href: string; title: string; description: stri
       url: o.href,
       images: [OG_IMAGE],
     },
-    twitter: { card: 'summary', title: o.title, description: o.description },
+    twitter: { card: 'summary_large_image', title: o.title, description: o.description, images: [OG_IMAGE.url] },
   };
 }
 
