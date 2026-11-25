@@ -160,6 +160,183 @@
   .qr-preview { min-height: 220px; }
 }
 
+/* ---------- /daily/lotto/ ---------- */
+.lt .wrap { display: flex; flex-direction: column; gap: 20px; }
+.lt-h { font-size: 18px; font-weight: 600; color: var(--ink); margin: 0; }
+.lt-draw { display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center; }
+.lt-draw-head { display: flex; flex-direction: column; gap: 2px; align-items: center; }
+.lt-draw-balls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+.lt-plus { font-family: var(--font-mono); font-size: 22px; color: var(--ink-meta); }
+
+/* 로또 공 — 실제 공 색 구간 (1~10 노랑 · 11~20 파랑 · 21~30 빨강 · 31~40 회색 · 41~45 초록) */
+.lt-ball {
+  flex: 0 0 auto; display: inline-grid; place-items: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 600; line-height: 1;
+  color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+  box-shadow: inset -2px -3px 0 rgba(0, 0, 0, .12), inset 2px 2px 0 rgba(255, 255, 255, .35);
+}
+.lt-ball.lg { width: 52px; height: 52px; font-size: 20px; }
+.lt-ball.t1 { background: #fbc400; color: #4a3600; text-shadow: none; }
+.lt-ball.t2 { background: #3fa9e6; }
+.lt-ball.t3 { background: #f05a5a; }
+.lt-ball.t4 { background: #8a949e; }
+.lt-ball.t5 { background: #8bc34a; color: #22350b; text-shadow: none; }
+.lt-ball.empty { background: var(--canvas); color: var(--ink-meta); box-shadow: inset 0 0 0 2px var(--rule); text-shadow: none; }
+.lt-ball.miss { background: transparent; color: #7b8794; font-weight: 400; box-shadow: inset 0 0 0 1px var(--rule); text-shadow: none; }
+.lt-ball.bonus { outline: 2px dashed var(--ink-meta); outline-offset: 2px; }
+
+/* 구매 */
+.lt-buy { display: flex; flex-direction: column; gap: 16px; }
+.lt-amount-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.lt-amount { flex: 1 1 220px; max-width: 320px; }
+.lt-amount .input { font-size: 20px; font-weight: 600; text-align: right; padding-right: 40px; }
+.lt-amount .unit { right: 14px; }
+.lt-add { display: flex; flex-wrap: wrap; gap: 6px; }
+.lt-add .btn { font-family: var(--font-mono); }
+.lt-buy-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px; }
+.lt-buy-foot .meta b { color: var(--ink); }
+.lt-buy-btn { min-width: 160px; min-height: 48px; font-size: 17px; }
+.lt-progress { height: 6px; border-radius: 3px; background: var(--chrome); overflow: hidden; }
+.lt-progress span { display: block; height: 100%; background: var(--primary); transition: width .1s linear; }
+
+/* PC: 결과 목록 높이를 통계 칸 높이에 맞춘다 (목록 내용은 행 높이에 영향을 주지 않도록 height: 0 + flex-grow) */
+.lt-main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: stretch; }
+.lt-results { min-width: 0; display: flex; flex-direction: column; }
+.lt-list-box { flex: 1 1 0; height: 0; min-height: 560px; overflow-y: auto; border: 1px solid var(--rule); border-radius: var(--r-lg); background: var(--canvas); overscroll-behavior: contain; }
+.lt-empty { padding: 28px 16px; text-align: center; font-size: 14px; color: var(--ink-meta); line-height: 1.5; }
+.lt-list { list-style: none; margin: 0; padding: 0; }
+.lt-list-box.wins-only .lt-row.r0 { display: none; }
+
+/* 결과 행 */
+.lt-row {
+  position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  padding: 8px 14px; border-bottom: 1px solid var(--rule); overflow: hidden;
+  animation: lt-in .25s var(--ease);
+}
+.lt-no { font-family: var(--font-mono); font-size: 12px; color: var(--ink-meta); }
+.lt-balls { display: flex; gap: 4px; flex-wrap: nowrap; }
+.lt-rank { display: inline-flex; flex-direction: column; align-items: center; min-width: 64px; padding: 3px 8px; border-radius: var(--r-sm); font-size: 14px; font-weight: 600; line-height: 1.25; color: var(--ink-meta); }
+.lt-rank small { font-size: 11px; font-weight: 400; opacity: .85; }
+.lt-row.r0 .lt-rank { font-weight: 400; }
+
+/* 5등 — 약한 강조 */
+.lt-row.r5 { background: var(--chrome); }
+.lt-row.r5 .lt-rank { background: #dde1e5; color: var(--ink-body); }
+
+/* 4등 — 일반 강조 */
+.lt-row.r4 { background: var(--ok-bg); box-shadow: inset 4px 0 0 var(--ok); }
+.lt-row.r4 .lt-rank { background: var(--ok); color: #fff; }
+
+/* 3등 — 적당히 화려 (동색 그라데이션 + 한 번 반짝) */
+.lt-row.r3 { background: linear-gradient(90deg, #fff3e3, #ffe2c2); box-shadow: inset 4px 0 0 #d9822b; animation: lt-pop .5s var(--ease); }
+.lt-row.r3::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .8) 50%, transparent 70%); transform: translateX(-100%); animation: lt-shine 1.2s .2s ease-out 2; pointer-events: none; }
+.lt-row.r3 .lt-rank { background: linear-gradient(135deg, #e8933a, #b8621b); color: #fff; }
+
+/* 2등 — 조금 화려 (은빛·보라 그라데이션 + 맥박 광채) */
+.lt-row.r2 { padding-top: 12px; padding-bottom: 12px; background: linear-gradient(90deg, #f1f3f8, #e7defc, #f1f3f8); background-size: 200% 100%; box-shadow: inset 4px 0 0 #8a63d2; animation: lt-pop .5s var(--ease), lt-slide 4s linear infinite; }
+.lt-row.r2::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 2px rgba(138, 99, 210, .55); animation: lt-pulse 1.6s ease-in-out infinite; pointer-events: none; }
+.lt-row.r2 .lt-rank { background: linear-gradient(135deg, #b9a3ec, #6f49c4); color: #fff; box-shadow: 0 2px 8px rgba(111, 73, 196, .35); }
+
+/* 1등 — 매우 화려 (금빛 그라데이션 이동 + 반짝임 반복 + 광채) */
+.lt-row.r1 {
+  padding-top: 16px; padding-bottom: 16px;
+  background: linear-gradient(90deg, #fff6c8, #ffd95a, #fff1a8, #ffc93c, #fff6c8); background-size: 300% 100%;
+  box-shadow: inset 0 0 0 2px #e0a400, 0 0 24px rgba(255, 196, 0, .45);
+  animation: lt-pop .6s var(--ease), lt-slide 2.5s linear infinite;
+}
+.lt-row.r1::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, .9) 50%, transparent 65%); transform: translateX(-100%); animation: lt-shine 1.8s ease-in-out infinite; pointer-events: none; }
+.lt-row.r1 .lt-no { color: #7a5600; font-weight: 600; }
+.lt-row.r1 .lt-ball { width: 34px; height: 34px; font-size: 14px; animation: lt-bounce 1s ease-in-out infinite; }
+.lt-row.r1 .lt-ball:nth-child(2) { animation-delay: .08s; }
+.lt-row.r1 .lt-ball:nth-child(3) { animation-delay: .16s; }
+.lt-row.r1 .lt-ball:nth-child(4) { animation-delay: .24s; }
+.lt-row.r1 .lt-ball:nth-child(5) { animation-delay: .32s; }
+.lt-row.r1 .lt-ball:nth-child(6) { animation-delay: .4s; }
+.lt-row.r1 .lt-rank { font-size: 17px; background: linear-gradient(135deg, #ffcf33, #e08a00); color: #fff; text-shadow: 0 1px 2px rgba(120, 70, 0, .5); box-shadow: 0 0 0 2px #fff, 0 4px 14px rgba(224, 138, 0, .55); }
+
+/* 통계 */
+.lt-stats { align-self: start; display: flex; flex-direction: column; gap: 12px; position: sticky; top: calc(var(--topbar-h) + 16px); min-width: 0; }
+.lt-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--rule); }
+.lt-sum .stat-value { font-size: 19px; }
+.lt-plus-v { color: var(--ok); }
+.lt-minus-v { color: var(--err); }
+.lt-net { margin: 0; text-align: right; }
+.lt-net.up b { color: var(--ok); }
+.lt-net.down b { color: var(--err); }
+.lt-table { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--rule); border-radius: var(--r-lg); overflow: hidden; }
+.lt-table th, .lt-table td { padding: 8px 10px; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
+.lt-table thead th { background: var(--chrome); color: var(--ink-meta); font-weight: 400; font-size: 13px; }
+.lt-table th:first-child { text-align: left; }
+.lt-table tbody th { font-weight: 400; }
+.lt-table tbody th small { display: block; font-size: 12px; color: var(--ink-meta); margin-top: 2px; }
+.lt-table td.mono { font-size: 13px; color: var(--ink-body); }
+.lt-table tr:last-child th, .lt-table tr:last-child td { border-bottom: 0; }
+.lt-table .lt-count { font-size: 15px; font-weight: 600; color: var(--ink); }
+.lt-rank-chip { display: inline-block; min-width: 40px; padding: 1px 8px; border-radius: var(--r-sm); text-align: center; font-weight: 600; background: var(--chrome); color: var(--ink-body); }
+.lt-table tr.r1 .lt-rank-chip { background: linear-gradient(135deg, #ffcf33, #e08a00); color: #fff; }
+.lt-table tr.r2 .lt-rank-chip { background: linear-gradient(135deg, #b9a3ec, #6f49c4); color: #fff; }
+.lt-table tr.r3 .lt-rank-chip { background: linear-gradient(135deg, #e8933a, #b8621b); color: #fff; }
+.lt-table tr.r4 .lt-rank-chip { background: var(--ok); color: #fff; }
+.lt-table tr.r0 .lt-rank-chip { background: transparent; color: var(--ink-meta); font-weight: 400; }
+.lt-table tr.has.r1 { background: #fff6c8; }
+.lt-table tr.has.r2 { background: #f1ecfd; }
+.lt-table tr.has.r3 { background: #fff3e3; }
+.lt-table tr.has.r4 { background: var(--ok-bg); }
+.lt-note { line-height: 1.5; }
+
+/* 1·2등 축하 오버레이 */
+.lt-celebrate { position: fixed; inset: 0; z-index: 1000; pointer-events: none; overflow: hidden; }
+.lt-celebrate i { position: absolute; top: -20px; width: 8px; height: 14px; border-radius: 2px; opacity: .95; animation-name: lt-fall; animation-timing-function: linear; animation-fill-mode: forwards; }
+.lt-celebrate.c2 i { width: 6px; height: 10px; }
+.lt-banner {
+  position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 22px 36px; border-radius: var(--r-lg); background: rgba(255, 255, 255, .96); text-align: center; white-space: nowrap;
+  animation: lt-banner-in .6s var(--ease), lt-banner-out .6s ease-in 4.4s forwards;
+}
+.lt-banner strong { font-size: 48px; line-height: 1.1; font-weight: 700; }
+.lt-banner span { font-size: 15px; color: var(--ink-body); }
+.c1 .lt-banner { box-shadow: 0 0 0 3px #e0a400, 0 12px 48px rgba(224, 138, 0, .45); }
+.c1 .lt-banner strong { background: linear-gradient(90deg, #e08a00, #ffcf33, #e05a00, #ffcf33, #e08a00); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: lt-slide 1.5s linear infinite; }
+.c2 .lt-banner { padding: 16px 28px; box-shadow: 0 0 0 2px #8a63d2, 0 10px 32px rgba(111, 73, 196, .3); animation: lt-banner-in .5s var(--ease), lt-banner-out .5s ease-in 3s forwards; }
+.c2 .lt-banner strong { font-size: 32px; color: #6f49c4; }
+
+@keyframes lt-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes lt-pop { 0% { transform: scale(.96); } 50% { transform: scale(1.02); } 100% { transform: none; } }
+@keyframes lt-shine { to { transform: translateX(100%); } }
+@keyframes lt-slide { from { background-position: 0 0; } to { background-position: 200% 0; } }
+@keyframes lt-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+@keyframes lt-bounce { 0%, 100% { transform: none; } 50% { transform: translateY(-4px); } }
+@keyframes lt-fall { to { transform: translate(var(--dx), 110vh) rotate(var(--rot)); } }
+@keyframes lt-banner-in { from { opacity: 0; transform: translate(-50%, -50%) scale(.6); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes lt-banner-out { to { opacity: 0; transform: translate(-50%, -60%); } }
+
+@media (max-width: 1023px) {
+  .lt-main { grid-template-columns: minmax(0, 1fr); }
+  .lt-stats { position: static; }
+  .lt-list-box { flex: none; height: 60vh; min-height: 360px; }
+}
+@media (max-width: 599px) {
+  .lt-ball.lg { width: 38px; height: 38px; font-size: 15px; }
+  .lt-draw-balls { gap: 6px; }
+  .lt-amount { max-width: none; flex-basis: 100%; }
+  .lt-add { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lt-add .btn { min-height: 44px; }
+  .lt-buy-foot .btn-row { width: 100%; }
+  .lt-buy-foot .btn-row .btn { flex: 1; }
+  .lt-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "no rank" "balls rank"; gap: 2px 8px; padding: 8px 10px; }
+  .lt-no { grid-area: no; }
+  .lt-balls { grid-area: balls; gap: 3px; }
+  .lt-rank { grid-area: rank; min-width: 56px; }
+  .lt-ball { width: 28px; height: 28px; font-size: 12px; }
+  .lt-row.r1 .lt-ball { width: 30px; height: 30px; font-size: 13px; }
+  .lt-banner { padding: 18px 22px; }
+  .lt-banner strong { font-size: 36px; }
+  .c2 .lt-banner strong { font-size: 26px; }
+  .lt-banner span { white-space: normal; }
+}
+
 /* ---------- /playground/features/ ---------- */
 .fc { display: flex; flex-direction: column; gap: 20px; }
 .fc-head { display: flex; flex-direction: column; gap: 18px; }

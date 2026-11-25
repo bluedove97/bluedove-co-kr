@@ -54,6 +54,7 @@ export const MENU: MenuGroup[] = [
       { href: '/daily/age/', slug: 'age', icon: 'AGE', label: '만나이 계산기', title: '만나이 계산기', cardDesc: '만 나이, 연 나이, 띠, 다음 생일', relatedDesc: '만 나이·연 나이·띠' },
       { href: '/daily/fuel/', slug: 'fuel', icon: 'KM', label: '연비 계산기', title: '연비 계산기', cardDesc: 'km/L, 금액당 주행거리, km당 연료비', relatedDesc: 'km/L·금액당 주행거리' },
       { href: '/daily/qr/', slug: 'qr', icon: 'QR', label: 'QR 코드 만들기', title: 'QR 코드 만들기', cardDesc: 'URL·Wi-Fi·연락처·전화 QR, PNG·SVG 저장', relatedDesc: 'URL·Wi-Fi·연락처 QR 생성' },
+      { href: '/daily/lotto/', slug: 'lotto', icon: '645', label: '로또 확률 계산기', title: '로또 확률 계산기', cardDesc: '가상 회차로 로또 6/45 모의 구매, 등수별 확률·수익률', relatedDesc: '로또 모의 구매·당첨 확률' },
     ],
   },
   {
